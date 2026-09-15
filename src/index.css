@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text-main font-sans antialiased overflow-x-hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Bold Typography Defaults */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-black tracking-tight uppercase;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #FFFFFF;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #000000;
+  }
+}
+
+@layer utilities {
+  .text-stroke-black {
+    -webkit-text-stroke: 1px black;
+    color: transparent;
+  }
+
+  .text-stroke-white {
+    -webkit-text-stroke: 1px white;
+    color: transparent;
+  }
+}
