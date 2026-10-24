@@ -72,8 +72,15 @@ const Navbar = () => {
                     <Link to="/blog" className="text-black hover:text-primary transition-colors text-sm font-bold uppercase tracking-widest">
                         Insights
                     </Link>
-                    <Link to="/fellowship" className="text-black hover:text-primary transition-colors text-sm font-bold uppercase tracking-widest">
-                        Fellowship
+                    <Link
+                        to="/sprint"
+                        className="inline-flex items-center gap-1.5 text-black hover:text-primary transition-colors text-sm font-bold uppercase tracking-widest group"
+                    >
+                        <span>Growth Sprint</span>
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary bg-orange-50 border border-primary/40">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                            Sprint
+                        </span>
                     </Link>
                     <button onClick={openModal} className="px-6 py-3 bg-primary text-white font-black uppercase tracking-widest hover:bg-black transition-colors text-xs shadow-md">
                         BOOK A GROWTH AUDIT
@@ -96,8 +103,16 @@ const Navbar = () => {
                         <Link to="/blog" onClick={() => setIsOpen(false)} className="text-2xl font-black uppercase text-black hover:text-primary transition-colors">
                             Insights
                         </Link>
-                        <Link to="/fellowship" onClick={() => setIsOpen(false)} className="text-2xl font-black uppercase text-black hover:text-primary transition-colors">
-                            Fellowship
+                        <Link
+                            to="/sprint"
+                            onClick={() => setIsOpen(false)}
+                            className="text-2xl font-black uppercase text-black hover:text-primary transition-colors flex items-center justify-between"
+                        >
+                            <span>Growth Sprint</span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-primary bg-orange-50 border border-primary/40">
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                Sprint
+                            </span>
                         </Link>
                         <button onClick={() => { setIsOpen(false); openModal(); }} className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest text-sm">
                             BOOK A GROWTH AUDIT

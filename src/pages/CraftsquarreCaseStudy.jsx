@@ -15,22 +15,21 @@ const fadeUp = {
 
 export default function CraftsquarreCaseStudy() {
     const { openModal } = useModal();
-    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
     return (
         <div className="bg-white text-black font-sans selection:bg-primary selection:text-white">
 
-            {/* ── 1. HERO SECTION ── */}
+            {/* ── 1. CASE STUDY INTRODUCTION & SUMMARY METADATA ── */}
             <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-black text-white pt-32 pb-20 border-b border-black">
                 {/* Subtle dark ambient background grid */}
                 <div className="absolute inset-0 z-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-10" />
 
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                        
-                        {/* Left: Headline & Copy */}
+
+                        {/* Left: Headline & Metadata */}
                         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="lg:col-span-7">
-                            
+
                             {/* Official HD Logo Badge */}
                             <div className="inline-flex items-center gap-3 py-2.5 px-5 bg-white/10 border border-white/20 text-white text-xs font-black uppercase tracking-[0.2em] mb-6 backdrop-blur-md">
                                 <img src="/craftsquarre/craftsquarre-logo-white-orange.png" alt="Craftsquarre Official Logo" className="h-7 w-auto object-contain" />
@@ -87,9 +86,9 @@ export default function CraftsquarreCaseStudy() {
                             </div>
                         </motion.div>
 
-                        {/* Right: Visual Feature Composition (Official Desktop Site + Mobile App + Team Strategy Session) */}
+                        {/* Right: Visual Feature Composition */}
                         <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="lg:col-span-5 relative space-y-4">
-                            
+
                             {/* Primary Card: Official Craftsquarre Desktop Website Hero */}
                             <div className="relative border-4 border-white/20 bg-gray-950 shadow-[12px_12px_0px_0px_rgba(255,94,0,1)] overflow-hidden group">
                                 <img
@@ -101,7 +100,7 @@ export default function CraftsquarreCaseStudy() {
                                     Live Website Interface
                                 </div>
                                 <div className="absolute bottom-3 right-3 bg-primary text-white px-3 py-1 text-[10px] font-black uppercase tracking-widest shadow-lg">
-                                    40+ Featured Merchants
+                                    Curated Marketplace
                                 </div>
                             </div>
 
@@ -114,7 +113,7 @@ export default function CraftsquarreCaseStudy() {
                                         className="w-full h-44 object-cover object-top"
                                     />
                                     <div className="absolute bottom-1 left-1 bg-black/90 text-white text-[9px] font-black uppercase px-2 py-0.5">
-                                        Mobile App UI
+                                        Mobile Experience
                                     </div>
                                 </div>
 
@@ -125,7 +124,7 @@ export default function CraftsquarreCaseStudy() {
                                         className="w-full h-44 object-cover object-center"
                                     />
                                     <div className="absolute bottom-1 left-1 bg-black/90 text-white text-[9px] font-black uppercase px-2 py-0.5">
-                                        Strategy Review
+                                        Strategy Session
                                     </div>
                                 </div>
                             </div>
@@ -137,24 +136,24 @@ export default function CraftsquarreCaseStudy() {
             </section>
 
 
-            {/* ── 2. THE OPPORTUNITY (INTRODUCTION) ── */}
+            {/* ── 2. THE OPPORTUNITY ── */}
             <section className="py-28 bg-white border-b border-black">
                 <div className="container mx-auto px-6">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="lg:col-span-6">
-                            <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Introduction</span>
+                            <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Market Context</span>
                             <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-8 leading-[0.95]">
                                 The Opportunity
                             </h2>
                             <div className="space-y-6 text-black/80 font-bold text-lg md:text-xl leading-relaxed border-l-4 border-primary pl-6">
                                 <p>
-                                    Craftsquarre was created from a simple observation:
+                                    Craftsquarre was founded to address a systemic problem in the African creative economy:
                                 </p>
                                 <p className="text-black font-black text-2xl">
-                                    There are talented creators producing exceptional work, but many of them remain invisible.
+                                    Exceptional independent artisans produce distinctive products, yet most remain invisible in a fragmented digital landscape.
                                 </p>
                                 <p className="text-gray-700 text-lg font-medium">
-                                    The opportunity was bigger than simply creating another marketplace. It was to build a platform where creativity could be discovered, creators could be supported, and their stories could become part of how their products were marketed.
+                                    The strategic opportunity was not simply to create another listing platform. It was to build a curated destination where creativity could be discovered, independent makers could find active marketing support, and authentic artisan stories could drive sustainable consumer adoption.
                                 </p>
                             </div>
 
@@ -189,45 +188,109 @@ export default function CraftsquarreCaseStudy() {
             </section>
 
 
-            {/* ── 3. THE STARTING POINT ── */}
-            <section className="py-28 bg-gray-50 border-b border-black">
+            {/* ── 3. THE BUSINESS CHALLENGE ── */}
+            <section className="py-28 bg-black text-white border-b border-black">
                 <div className="container mx-auto px-6">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Engagement Scope</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            From Idea to Marketplace
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Marketplace Economics</span>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6">
+                            The Business Challenge
                         </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            Craftsquarre was already moving beyond the idea stage when the engagement began. The product UI was being developed, and the initial request was to establish the brand identity. But the work quickly expanded beyond the logo into defining how the brand would look, communicate, position itself, acquire merchants, and eventually grow.
+                        <p className="text-lg md:text-xl font-bold text-gray-300 leading-relaxed border-l-4 border-primary pl-5">
+                            Like any two-sided marketplace, Craftsquarre encountered the classic cold-start dilemma: merchants require established buyer traffic before committing inventory, while buyers expect a diverse, curated catalog before exploring a new platform. Solving this required establishing trust on both sides simultaneously.
                         </p>
                     </motion.div>
 
-                    {/* Timeline / Progression */}
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+                    {/* Two-Sided Value Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="bg-gray-950 p-8 border-2 border-gray-800 hover:border-primary transition-colors">
+                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Demand Side</span>
+                            <h3 className="text-2xl font-black text-white uppercase mb-4">Merchant Considerations</h3>
+                            <p className="text-sm font-medium text-gray-400 mb-6 leading-relaxed">
+                                Independent creators need confidence that listing on a new platform is worth their effort and will deliver real commercial exposure:
+                            </p>
+                            <ul className="space-y-3 font-bold text-gray-300 text-sm">
+                                <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Credible visibility and brand exposure</li>
+                                <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Active marketing support beyond basic hosting</li>
+                                <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Sustainable commercial visibility and customer access for artisan crafts</li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-gray-950 p-8 border-2 border-gray-800 hover:border-primary transition-colors">
+                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Supply Side</span>
+                            <h3 className="text-2xl font-black text-white uppercase mb-4">Buyer Considerations</h3>
+                            <p className="text-sm font-medium text-gray-400 mb-6 leading-relaxed">
+                                Conscious consumers need assurance that products are authentic, well-crafted, and protected by reliable transaction infrastructure:
+                            </p>
+                            <ul className="space-y-3 font-bold text-gray-300 text-sm">
+                                <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Discovery of unique, high-quality local products</li>
+                                <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Payment protection and dependable seller standards</li>
+                                <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Consistent product presentation and transparent information</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ── 4. AYOMIDE'S ROLE & RESPONSIBILITIES ── */}
+            <section className="py-28 bg-white border-b border-black">
+                <div className="container mx-auto px-6">
+                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Leadership & Coordination</span>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
+                            Ayomide's Role & Responsibilities
+                        </h2>
+                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
+                            Ayomide led and coordinated the marketing function, working collaboratively with the founding and cross-functional teams to shape Craftsquarre's brand positioning, go-to-market rollout, and initial traction.
+                        </p>
+                    </motion.div>
+
+                    {/* 7 Responsibility Cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
-                            { step: "01", title: "Brand Foundation", desc: "Identity, positioning, messaging architecture." },
-                            { step: "02", title: "Product", desc: "UI alignment, store layout & merchant presentation." },
-                            { step: "03", title: "Launch", desc: "Go-to-market rollout & launch campaign framework." },
-                            { step: "04", title: "Marketing System", desc: "Merchant storytelling & repeatable content engine." },
-                            { step: "05", title: "Marketplace Growth", desc: "Merchant acquisition loop & buyer discovery." },
-                        ].map((item, index) => (
+                            {
+                                title: "Brand Identity & Positioning",
+                                desc: "Defined visual identity guidelines, core messaging architecture, and market positioning to establish a distinct presence."
+                            },
+                            {
+                                title: "Go-to-Market Planning",
+                                desc: "Formulated the launch rollout framework and coordinated early market entry touchpoints across digital channels."
+                            },
+                            {
+                                title: "Product Marketing",
+                                desc: "Structured platform feature communication, buyer value propositions, and merchant onboarding communication."
+                            },
+                            {
+                                title: "Content Strategy & Production",
+                                desc: "Designed repeatable storytelling pillars and coordinated multimedia production, including photo and video shoots."
+                            },
+                            {
+                                title: "Acquisition Initiatives",
+                                desc: "Coordinated targeted outreach and digital campaigns to attract initial merchant cohorts and curious buyers."
+                            },
+                            {
+                                title: "Paid Advertising & Digital",
+                                desc: "Executed initial paid discovery tests, search engine presence, and campaign landing page communication."
+                            },
+                            {
+                                title: "Marketing Team Coordination",
+                                desc: "Guided day-to-day marketing operations, asset delivery, and collaboration with the wider development and leadership team."
+                            }
+                        ].map((role, idx) => (
                             <motion.div
-                                key={index}
+                                key={idx}
                                 variants={fadeUp}
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between"
+                                transition={{ delay: idx * 0.05 }}
+                                className="bg-gray-50 border-2 border-black p-6 hover:border-primary transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,94,0,1)] flex flex-col justify-between"
                             >
                                 <div>
-                                    <span className="text-3xl font-black text-primary mb-2 block">{item.step}</span>
-                                    <h3 className="text-lg font-black uppercase tracking-tight text-black mb-2">{item.title}</h3>
-                                    <p className="text-xs font-medium text-gray-600 leading-relaxed">{item.desc}</p>
+                                    <span className="text-xs font-black uppercase tracking-widest text-primary mb-2 block">{role.title}</span>
+                                    <p className="text-xs font-bold text-gray-800 leading-relaxed">{role.desc}</p>
                                 </div>
-                                {index < 4 && (
-                                    <div className="hidden md:block text-right text-gray-300 font-black text-xl mt-4">&rarr;</div>
-                                )}
                             </motion.div>
                         ))}
                     </div>
@@ -235,46 +298,46 @@ export default function CraftsquarreCaseStudy() {
             </section>
 
 
-            {/* ── 4. THE BRAND FOUNDATION ── */}
-            <section className="py-28 bg-white border-b border-black">
+            {/* ── 5. BRAND POSITIONING & IDENTITY DEVELOPMENT ── */}
+            <section className="py-28 bg-gray-50 border-b border-black">
                 <div className="container mx-auto px-6">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
                         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="lg:col-span-7">
-                            <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Positioning Evolution</span>
+                            <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Strategic Positioning</span>
                             <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6 leading-[0.95]">
-                                Building the Brand Before Building the Growth Engine
+                                From "Handmade" to Curated Creativity
                             </h2>
                             <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed mb-6 border-l-4 border-primary pl-5">
-                                The first task was creating a brand strong enough to carry the marketplace. This included logo & visual identity, typography, brand direction, messaging, positioning, and brand personality.
+                                Establishing a differentiated identity was the necessary prerequisite before launching acquisition efforts. The visual system, brand voice, and positioning required coherence to communicate both artisanal authenticity and modern commerce.
                             </p>
                             <p className="text-gray-600 font-medium text-base leading-relaxed">
-                                Craftsquarre initially focused on handmade products but evolved toward a broader idea of <strong className="text-black">curated creativity</strong>, allowing the platform to celebrate creativity rather than limiting itself strictly to products made entirely by hand.
+                                Craftsquarre initially focused on handmade goods, but the strategic positioning was broadened toward <strong className="text-black">curated creativity</strong>. This evolution significantly enlarged the addressable market, allowing the platform to feature design-forward lifestyle products, leathercraft, and bespoke fashion while upholding artisan standards.
                             </p>
                         </motion.div>
 
-                        {/* Before/After Concept Box */}
+                        {/* Strategic Shift Concept Box */}
                         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="lg:col-span-5">
                             <div className="bg-black text-white p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(255,94,0,1)]">
-                                <span className="text-xs font-black uppercase tracking-widest text-primary block mb-4">Strategic Positioning Shift</span>
+                                <span className="text-xs font-black uppercase tracking-widest text-primary block mb-4">Strategic Evolution</span>
                                 <div className="flex items-center justify-between gap-4 mb-6 bg-gray-900 p-4 border border-gray-800">
                                     <div>
-                                        <span className="text-[10px] font-black uppercase text-gray-400 block">Initial Focus</span>
+                                        <span className="text-[10px] font-black uppercase text-gray-400 block">Initial Positioning</span>
                                         <span className="text-xl font-black text-gray-400 line-through">HANDMADE</span>
                                     </div>
                                     <span className="text-2xl font-black text-primary">&rarr;</span>
                                     <div>
-                                        <span className="text-[10px] font-black uppercase text-primary block">Evolved Position</span>
+                                        <span className="text-[10px] font-black uppercase text-primary block">Expanded Positioning</span>
                                         <span className="text-xl font-black text-white">CURATED CREATIVITY</span>
                                     </div>
                                 </div>
                                 <p className="text-xs font-medium text-gray-400 leading-relaxed">
-                                    This strategic evolution expanded the addressable market while maintaining high standards of quality and artistic authenticity across categories.
+                                    This strategic shift enabled Craftsquarre to celebrate modern African craft in its full scope, broadening category appeal while preserving quality benchmarks.
                                 </p>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Brand Products Showcase Asset */}
+                    {/* Brand Showcase Visual Asset */}
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="relative border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
                         <img
                             src="/craftsquarre/craftsquarre-leather-menswear.jpg"
@@ -286,184 +349,129 @@ export default function CraftsquarreCaseStudy() {
                                 <h4 className="text-lg font-black uppercase tracking-tight text-white">Curated Product Presentation</h4>
                                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Personalized leather accessories, wallets, belts, and bespoke menswear</p>
                             </div>
-                            <span className="text-xs font-black uppercase tracking-widest bg-primary text-white px-4 py-2">Craftsquarre Brand Standard</span>
+                            <span className="text-xs font-black uppercase tracking-widest bg-primary text-white px-4 py-2">Brand Presentation Standard</span>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
 
-            {/* ── 5. THE MARKETPLACE CHALLENGE ── */}
-            <section className="py-28 bg-black text-white border-b border-black">
+            {/* ── 6. CONNECTING PRODUCT VALUE WITH MERCHANT & BUYER NEEDS ── */}
+            <section className="py-28 bg-white border-b border-black">
                 <div className="container mx-auto px-6">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Two-Sided Dynamics</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6">
-                            A Marketplace Needs More Than Listings
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Product Marketing</span>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
+                            Connecting Product Value with User Needs
                         </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-300 leading-relaxed border-l-4 border-primary pl-5">
-                            The challenge wasn't simply getting people to list products. Craftsquarre needed to build trust with both sides of the marketplace. Merchants needed a reason to join. Buyers needed a reason to trust the platform. And the brand needed to communicate enough value to make both sides want to participate.
+                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
+                            Effective marketplace marketing extends beyond external campaigns into how product features are communicated and experienced. Clear platform guidance and visual standards ensured both merchants and buyers encountered a professional, reliable environment.
                         </p>
                     </motion.div>
 
-                    {/* Marketplace Diagram & Supporting Needs */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                        <div className="lg:col-span-5 bg-gray-950 p-8 border-2 border-gray-800">
-                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-6">Marketplace Flow</span>
-                            <div className="flex flex-col items-center gap-6 text-center">
-                                <div className="w-full bg-white text-black p-4 font-black uppercase tracking-wider border-2 border-primary text-lg">
-                                    MERCHANTS
-                                </div>
-                                <div className="text-primary font-black text-2xl animate-bounce">&darr;</div>
-                                <div className="w-full bg-primary text-white p-5 font-black uppercase tracking-widest text-xl shadow-xl">
-                                    CRAFTSQUARRE
-                                </div>
-                                <div className="text-primary font-black text-2xl animate-bounce">&darr;</div>
-                                <div className="w-full bg-white text-black p-4 font-black uppercase tracking-wider border-2 border-primary text-lg">
-                                    BUYERS
-                                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div className="bg-gray-50 border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Merchant Experience</span>
+                            <h3 className="text-2xl font-black text-black uppercase mb-4">Supporting Independent Sellers</h3>
+                            <p className="text-sm font-medium text-gray-700 leading-relaxed mb-6">
+                                Craftsquarre provided makers with professional storefront layouts, catalog presentation standards, and promotional support designed to help their craftsmanship shine.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {["Storefront Guidelines", "Photography Standards", "Promotional Support", "Onboarding Guidance"].map((item) => (
+                                    <span key={item} className="px-3 py-1.5 bg-black text-white text-xs font-bold uppercase tracking-wider">{item}</span>
+                                ))}
                             </div>
                         </div>
 
-                        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div className="bg-gray-950 p-8 border-2 border-gray-800 hover:border-primary transition-colors">
-                                <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Side 01: Merchants</span>
-                                <h3 className="text-2xl font-black text-white uppercase mb-4">Merchant Needs</h3>
-                                <ul className="space-y-3 font-bold text-gray-300 text-sm">
-                                    <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Visibility for their brand</li>
-                                    <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Active marketing support</li>
-                                    <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Sustainable sales growth</li>
-                                </ul>
-                            </div>
-
-                            <div className="bg-gray-950 p-8 border-2 border-gray-800 hover:border-primary transition-colors">
-                                <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Side 02: Buyers</span>
-                                <h3 className="text-2xl font-black text-white uppercase mb-4">Buyer Needs</h3>
-                                <ul className="space-y-3 font-bold text-gray-300 text-sm">
-                                    <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Discovery of unique products</li>
-                                    <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Payment & seller trust</li>
-                                    <li className="flex items-center gap-3"><CheckCircle size={18} className="text-primary" /> Guaranteed product quality</li>
-                                </ul>
+                        <div className="bg-gray-50 border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Buyer Experience</span>
+                            <h3 className="text-2xl font-black text-black uppercase mb-4">Inspiring Confident Discovery</h3>
+                            <p className="text-sm font-medium text-gray-700 leading-relaxed mb-6">
+                                The platform emphasized creator background, product origins, and trustworthy transaction mechanisms to give buyers complete confidence in every purchase.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {["Artisan Profiles", "Curated Collections", "Payment Protection", "Direct Delivery Support"].map((item) => (
+                                    <span key={item} className="px-3 py-1.5 bg-primary text-white text-xs font-bold uppercase tracking-wider">{item}</span>
+                                ))}
                             </div>
                         </div>
+                    </div>
+
+                    <div className="bg-black text-white p-8 border-4 border-black">
+                        <p className="text-lg font-bold leading-relaxed">
+                            Aligning marketing promises with product reality established authentic trust: <strong className="text-primary">merchants received dedicated visibility for their work, while buyers discovered verified artisan creations with confidence.</strong>
+                        </p>
                     </div>
                 </div>
             </section>
 
 
-            {/* ── 6. STRATEGIC SHIFT ── */}
-            <section className="py-28 bg-white border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mx-auto text-center">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-4 block">Core Strategic Premise</span>
-                        <h2 className="text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter text-black mb-8 leading-[0.95]">
-                            We Didn't Want to Just List Products. <br />
-                            <span className="text-primary">We Wanted to Tell Their Stories.</span>
-                        </h2>
-
-                        {/* Highlighted Banner Statement */}
-                        <div className="my-10 p-8 bg-black text-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(255,94,0,1)] transform hover:-translate-y-1 transition-transform">
-                            <p className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">
-                                "Products get attention. Stories create connection."
-                            </p>
-                        </div>
-
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed max-w-3xl mx-auto border-l-4 border-primary pl-6 text-left">
-                            Most marketplaces can give a merchant a place to upload products. Craftsquarre goes further. The strategy was to make the people behind the products visible. Instead of only promoting what a merchant sells, we created opportunities for people to discover who made it, why they made it, and the story behind the work.
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
-
-
-            {/* ── 7. THE MERCHANT SPOTLIGHT SYSTEM ── */}
+            {/* ── 7. MARKETING STRATEGY TRANSLATED INTO EXECUTION & SELECTED WORK ── */}
             <section className="py-28 bg-gray-50 border-b border-black">
                 <div className="container mx-auto px-6">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
                         <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Content System</span>
                         <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            Turning Merchants Into Stories
+                            From Random Posts to a Content Engine
                         </h2>
                         <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            Craftsquarre invites merchants to participate in interviews where they bring their products, talk about their work, explain why they started, and share their journey. Those stories are then transformed into multiple pieces of content across platforms.
+                            Rather than relying on isolated promotional announcements, the marketing strategy centered on creator storytelling. Giving visibility to the makers behind the products turned artisanal craftsmanship into an authentic discovery channel.
                         </p>
                     </motion.div>
 
-                    {/* Content Ecosystem Diagrams */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
-                        <div className="lg:col-span-6 space-y-6">
-                            <div className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-4">Content Ecosystem Flow</h4>
-                                <div className="flex flex-wrap items-center gap-2 font-bold text-xs uppercase text-black">
-                                    <span className="bg-black text-white px-3 py-2">Merchant Interview</span> &rarr;
-                                    <span className="bg-gray-100 border border-black px-3 py-2">Long-Form Story</span> &rarr;
-                                    <span className="bg-gray-100 border border-black px-3 py-2">Video Snippets</span> &rarr;
-                                    <span className="bg-primary text-white px-3 py-2">Instagram & YouTube</span> &rarr;
-                                    <span className="bg-black text-white px-3 py-2">Paid Promotion</span> &rarr;
-                                    <span className="bg-primary text-white px-3 py-2">Merchant Discovery</span>
+                    {/* 4 Content Pillars */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                        {[
+                            {
+                                num: "01",
+                                title: "Merchant Spotlight",
+                                desc: "Creator interviews, studio profiles, and behind-the-scenes features highlighting the craftsmanship and dedication behind each collection."
+                            },
+                            {
+                                num: "02",
+                                title: "Buyer Discovery",
+                                desc: "Curated gift recommendations, styling ideas, and thematic collections that introduce shoppers to distinctive Nigerian-made products."
+                            },
+                            {
+                                num: "03",
+                                title: "Platform Education",
+                                desc: "Informative content explaining marketplace features, escrow and buyer protection, and how simple it is to explore and order."
+                            },
+                            {
+                                num: "04",
+                                title: "Merchant Enablement",
+                                desc: "Practical guidance showing makers how Craftsquarre supports their business, helps optimize storefronts, and promotes their craft."
+                            }
+                        ].map((cat, index) => (
+                            <motion.div
+                                key={index}
+                                variants={fadeUp}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="group bg-white border-2 border-black p-8 hover:border-primary transition-all duration-300 transform hover:-translate-y-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(255,94,0,1)] flex flex-col justify-between"
+                            >
+                                <div>
+                                    <span className="text-3xl font-black text-primary mb-4 block">{cat.num}</span>
+                                    <h3 className="text-xl font-black uppercase tracking-tight text-black mb-3 group-hover:text-primary transition-colors">{cat.title}</h3>
+                                    <p className="text-sm font-medium text-gray-700 leading-relaxed border-l-2 border-gray-200 group-hover:border-primary pl-3 transition-colors">{cat.desc}</p>
                                 </div>
-                            </div>
+                            </motion.div>
+                        ))}
+                    </div>
 
-                            <div className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-4">Growth Loop Strategy</h4>
-                                <div className="flex flex-wrap items-center gap-2 font-bold text-xs uppercase text-black">
-                                    <span className="bg-gray-100 border border-black px-3 py-2">Merchant Story</span> &rarr;
-                                    <span className="bg-gray-100 border border-black px-3 py-2">Product Discovery</span> &rarr;
-                                    <span className="bg-primary text-white px-3 py-2">Platform Awareness</span> &rarr;
-                                    <span className="bg-black text-white px-3 py-2">Merchant Acquisition</span>
-                                </div>
-                            </div>
-                        </div>
+                    {/* Selected Work & Visual Evidence Assets */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
+                        <div className="lg:col-span-6 space-y-4">
+                            <h3 className="text-2xl font-black uppercase tracking-tight text-black mb-2">Authentic Multimedia Storytelling</h3>
+                            <p className="text-sm font-medium text-gray-700 leading-relaxed mb-4">
+                                Content production centered on genuine artisan interviews and in-studio photography, providing rich visual assets for organic channels and paid discovery.
+                            </p>
 
-                        {/* Merchant Interview & Content Production Visual Assets */}
-                        <div className="lg:col-span-6 space-y-6">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                
-                                {/* Real Merchant Video Reel Still */}
-                                <a
-                                    href="https://www.instagram.com/p/DbGR5u0IGvW/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="relative group overflow-hidden border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-black block"
-                                >
-                                    <img
-                                        src="/craftsquarre/craftsquarre-merchant-speaker.png"
-                                        alt="Authentic Craftsquarre Merchant Interview Speaker Reel"
-                                        className="w-full h-72 object-cover object-top filter contrast-105 group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center group-hover:bg-black/20 transition-colors">
-                                        <div className="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform mb-2">
-                                            <Play size={24} fill="currentColor" />
-                                        </div>
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-white bg-black/80 px-2 py-1 border border-primary/40">Watch Reel</span>
-                                    </div>
-                                    <div className="absolute bottom-0 inset-x-0 bg-black/90 text-white p-3 border-t border-white/20">
-                                        <p className="text-[10px] font-black uppercase text-primary">Merchant Spotlight Reel</p>
-                                        <p className="text-xs font-bold">Creator Interview Series</p>
-                                    </div>
-                                </a>
-
-                                {/* Behind-The-Scenes Studio Photoshoot (Clean Photo, No Play Button) */}
-                                <div className="relative group overflow-hidden border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-black">
-                                    <img
-                                        src="/craftsquarre/craftsquarre-studio-photoshoot.jpg"
-                                        alt="Behind-the-scenes Craftsquarre Studio Photography Shoot"
-                                        className="w-full h-72 object-cover object-center filter contrast-105"
-                                    />
-                                    <div className="absolute bottom-0 inset-x-0 bg-black/90 text-white p-3 border-t border-white/20 flex justify-between items-center">
-                                        <div>
-                                            <p className="text-[10px] font-black uppercase text-primary">Content Production</p>
-                                            <p className="text-xs font-bold">In-Studio Shoot</p>
-                                        </div>
-                                        <span className="text-[9px] font-black uppercase tracking-widest bg-primary text-white px-2 py-1">BTS Photo</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            {/* Instagram Merchant Spotlight Feature Bar */}
-                            <div className="bg-gray-50 border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-primary block mb-3">Verified Merchant Spotlight Series</span>
+                            {/* Verified Merchant Spotlight Links Bar */}
+                            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-primary block mb-3">Merchant Spotlight Reels Series</span>
                                 <div className="grid grid-cols-3 gap-2">
                                     <a
                                         href="https://www.instagram.com/p/DbGR5u0IGvW/"
@@ -495,83 +503,52 @@ export default function CraftsquarreCaseStudy() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
 
-
-            {/* ── 8. CONTENT ENGINE ── */}
-            <section className="py-28 bg-white border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Structured Execution</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            From Random Content to a Repeatable System
-                        </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            The marketing team developed a repeatable content structure instead of relying on random social media posts, organizing content into four clear strategic categories.
-                        </p>
-                    </motion.div>
-
-                    {/* 4 Content Categories Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {[
-                            {
-                                num: "01",
-                                title: "Merchant Spotlight",
-                                desc: "Merchant stories, introductions, reviews, interviews, and behind-the-scenes content highlighting the craftsmanship behind products."
-                            },
-                            {
-                                num: "02",
-                                title: "Buyer Acquisition",
-                                desc: "Content designed to help potential buyers discover curated products and understand why they should shop on Craftsquarre."
-                            },
-                            {
-                                num: "03",
-                                title: "Platform Education",
-                                desc: "Content explaining Craftsquarre, its features, benefits, buyer protection, and how the marketplace platform operates."
-                            },
-                            {
-                                num: "04",
-                                title: "Merchant Success",
-                                desc: "Content showing how merchants use the platform, onboard their inventory, and how Craftsquarre actively supports their business."
-                            }
-                        ].map((cat, index) => (
-                            <motion.div
-                                key={index}
-                                variants={fadeUp}
-                                initial="hidden"
-                                whileInView="show"
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className="group bg-white border-2 border-black p-8 hover:border-primary transition-all duration-300 transform hover:-translate-y-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(255,94,0,1)] flex flex-col justify-between"
+                        {/* Visual Asset Pair */}
+                        <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {/* Merchant Spotlight Video Reel Still */}
+                            <a
+                                href="https://www.instagram.com/p/DbGR5u0IGvW/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="relative group overflow-hidden border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-black block"
                             >
-                                <div>
-                                    <span className="text-3xl font-black text-primary mb-4 block">{cat.num}</span>
-                                    <h3 className="text-xl font-black uppercase tracking-tight text-black mb-3 group-hover:text-primary transition-colors">{cat.title}</h3>
-                                    <p className="text-sm font-medium text-gray-700 leading-relaxed border-l-2 border-gray-200 group-hover:border-primary pl-3 transition-colors">{cat.desc}</p>
+                                <img
+                                    src="/craftsquarre/craftsquarre-merchant-speaker.png"
+                                    alt="Authentic Craftsquarre Merchant Interview Speaker Reel"
+                                    className="w-full h-72 object-cover object-top filter contrast-105 group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center group-hover:bg-black/20 transition-colors">
+                                    <div className="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform mb-2">
+                                        <Play size={24} fill="currentColor" />
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-white bg-black/80 px-2 py-1 border border-primary/40">Watch Reel</span>
                                 </div>
-                            </motion.div>
-                        ))}
+                                <div className="absolute bottom-0 inset-x-0 bg-black/90 text-white p-3 border-t border-white/20">
+                                    <p className="text-[10px] font-black uppercase text-primary">Merchant Spotlight Reel</p>
+                                    <p className="text-xs font-bold">Creator Interview Series</p>
+                                </div>
+                            </a>
+
+                            {/* In-Studio Photoshoot BTS */}
+                            <div className="relative group overflow-hidden border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-black">
+                                <img
+                                    src="/craftsquarre/craftsquarre-studio-photoshoot.jpg"
+                                    alt="Behind-the-scenes Craftsquarre Studio Photography Shoot"
+                                    className="w-full h-72 object-cover object-center filter contrast-105"
+                                />
+                                <div className="absolute bottom-0 inset-x-0 bg-black/90 text-white p-3 border-t border-white/20 flex justify-between items-center">
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase text-primary">Content Production</p>
+                                        <p className="text-xs font-bold">In-Studio Shoot</p>
+                                    </div>
+                                    <span className="text-[9px] font-black uppercase tracking-widest bg-primary text-white px-2 py-1">BTS Photo</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </section>
 
-
-            {/* ── 9. MERCHANT SUCCESS STORIES (TESTIMONIALS) ── */}
-            <section className="py-28 bg-gray-50 border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Authentic Advocacy</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            Letting Merchants Sell the Platform
-                        </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            One of the strongest forms of marketing became the merchants themselves. We created content that allowed merchants to explain how Craftsquarre had helped them, giving potential merchants a genuine reason to believe the platform could work for them.
-                        </p>
-                    </motion.div>
-
-                    {/* Authentic Creator Storefronts & Handcrafted Product Selection */}
+                    {/* Creator Storefront Showcase */}
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] bg-white p-4">
                         <img
                             src="/craftsquarre/craftsquarre-creator-bags-grid.png"
@@ -590,106 +567,16 @@ export default function CraftsquarreCaseStudy() {
             </section>
 
 
-            {/* ── 10. THE EXPERIENCE BEHIND THE MARKETING ── */}
-            <section className="py-28 bg-white border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Operational Alignment</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            Marketing Doesn't End at Acquisition
-                        </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            The marketing team's communication had to be reinforced by the experience merchants received. Craftsquarre's customer support and founder involvement helped create that experience, supported by quality control across merchant presentation, store banners, and onboarding resources.
-                        </p>
-                    </motion.div>
-
-                    {/* Merchant Journey Flow */}
-                    <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-center">
-                        {[
-                            "DISCOVER", "JOIN", "ONBOARD", "GET SUPPORTED", "GET PROMOTED", "REFER"
-                        ].map((step, idx) => (
-                            <div key={idx} className="bg-black text-white p-4 font-black uppercase tracking-wider text-xs border-2 border-primary">
-                                <span className="text-primary block text-[10px] mb-1">STEP 0{idx + 1}</span>
-                                {step}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ── 11. REFERRAL EFFECT ── */}
+            {/* ── 8. EARLY PROGRESS & APPROVED METRICS ── */}
             <section className="py-28 bg-black text-white border-b border-black">
                 <div className="container mx-auto px-6">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Organic Growth Engine</span>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Strategic & Creative Delivery</span>
                         <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6">
-                            When Good Experiences Become Marketing
+                            Marketing Delivery & Early Traction
                         </h2>
                         <p className="text-lg md:text-xl font-bold text-gray-300 leading-relaxed border-l-4 border-primary pl-5">
-                            A significant number of merchants came through referrals. Merchants who experienced the support and attention provided by the platform recommended Craftsquarre to others, creating a powerful growth loop.
-                        </p>
-                    </motion.div>
-
-                    {/* Visual Growth Loop */}
-                    <div className="bg-gray-950 border-2 border-gray-800 p-8 max-w-5xl mx-auto shadow-[10px_10px_0px_0px_rgba(255,94,0,1)]">
-                        <span className="text-xs font-black uppercase tracking-widest text-primary block mb-6 text-center">Merchant Acquisition Growth Loop</span>
-                        <div className="flex flex-wrap items-center justify-center gap-4 text-center font-black text-xs uppercase text-white">
-                            <span className="bg-white text-black px-4 py-3 border-2 border-primary">Good Experience</span> &rarr;
-                            <span className="bg-white text-black px-4 py-3 border-2 border-primary">Merchant Satisfaction</span> &rarr;
-                            <span className="bg-primary text-white px-4 py-3">Referral</span> &rarr;
-                            <span className="bg-white text-black px-4 py-3 border-2 border-primary">New Merchant</span> &rarr;
-                            <span className="bg-primary text-white px-4 py-3">More Marketplace Supply</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ── 12. MY ROLE ── */}
-            <section className="py-28 bg-white border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Leadership & Strategy</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            What I Led
-                        </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            Ayomide and the marketing team led and coordinated the core marketing functions across brand, go-to-market, growth, content, and digital execution as the platform developed.
-                        </p>
-                    </motion.div>
-
-                    {/* Clean Role Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { title: "Brand", desc: "Brand identity, positioning, messaging, and overall brand direction." },
-                            { title: "Go-to-Market", desc: "Launch planning and initial market entry strategy." },
-                            { title: "Growth", desc: "Merchant acquisition, buyer acquisition strategy, and paid advertising." },
-                            { title: "Content", desc: "Content strategy, video production strategy, and content systems." },
-                            { title: "Product Marketing", desc: "Platform messaging, feature communication, and merchant education." },
-                            { title: "Digital", desc: "Landing pages, SEO, website messaging, and digital acquisition." },
-                            { title: "Team", desc: "Led and coordinated the marketing function as the team grew." }
-                        ].map((role, idx) => (
-                            <div key={idx} className="bg-gray-50 border-2 border-black p-6 hover:border-primary transition-colors">
-                                <span className="text-xs font-black uppercase tracking-widest text-primary mb-2 block">{role.title}</span>
-                                <p className="text-xs font-bold text-black leading-relaxed">{role.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ── 13. GROWTH MILESTONES (EARLY TRACTION) ── */}
-            <section className="py-28 bg-black text-white border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Verified Milestones</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6">
-                            Early Traction
-                        </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-300 leading-relaxed border-l-4 border-primary pl-5">
-                            Early marketplace traction demonstrating that the brand, content engine, and merchant acquisition foundation are beginning to work.
+                            Initial operational and marketing milestones achieved during the rollout, validating the brand positioning, creative direction, content systems, and collaborative merchant onboarding.
                         </p>
                     </motion.div>
 
@@ -698,198 +585,155 @@ export default function CraftsquarreCaseStudy() {
                         <div className="bg-gray-950 border-2 border-gray-800 p-8 hover:border-primary transition-colors">
                             <span className="text-5xl font-black text-primary block mb-2">100+</span>
                             <span className="text-sm font-black uppercase tracking-widest text-white block">Merchants</span>
+                            <span className="text-xs text-gray-400 mt-1 block">Platform Onboarding Cohort</span>
                         </div>
                         <div className="bg-gray-950 border-2 border-gray-800 p-8 hover:border-primary transition-colors">
                             <span className="text-5xl font-black text-primary block mb-2">150+</span>
-                            <span className="text-sm font-black uppercase tracking-widest text-white block">Buyers</span>
-                        </div>
-                        <div className="bg-gray-950 border-2 border-gray-800 p-8 hover:border-primary transition-colors">
-                            <span className="text-5xl font-black text-primary block mb-2">₦700K+</span>
-                            <span className="text-sm font-black uppercase tracking-widest text-white block">Marketplace Sales</span>
+                            <span className="text-sm font-black uppercase tracking-widest text-white block">Registered Buyers</span>
+                            <span className="text-xs text-gray-400 mt-1 block">Early Platform Discovery</span>
                         </div>
                         <div className="bg-gray-950 border-2 border-gray-800 p-8 hover:border-primary transition-colors">
                             <span className="text-5xl font-black text-primary block mb-2">300+</span>
-                            <span className="text-sm font-black uppercase tracking-widest text-white block">Instagram Followers</span>
+                            <span className="text-sm font-black uppercase tracking-widest text-white block">Community</span>
+                            <span className="text-xs text-gray-400 mt-1 block">Organic Social Audience</span>
+                        </div>
+                        <div className="bg-gray-950 border-2 border-gray-800 p-8 hover:border-primary transition-colors">
+                            <span className="text-5xl font-black text-primary block mb-2">5</span>
+                            <span className="text-sm font-black uppercase tracking-widest text-white block">Core Systems</span>
+                            <span className="text-xs text-gray-400 mt-1 block">Strategy & Creative Pillars</span>
                         </div>
                     </div>
 
                     <p className="text-xs font-medium text-gray-400 italic">
-                        * Supporting note: Instagram growth from zero, without influencer marketing, supported by consistent content and limited paid promotion.
+                        * Note: Early platform adoption milestones reflect collective progress achieved collaboratively alongside Craftsquarre's founding and technical teams, supported by Lofty Brands' marketing strategy, creative direction, and merchant acquisition initiatives.
                     </p>
                 </div>
             </section>
 
 
-            {/* ── 14. WHAT CHANGED ── */}
+            {/* ── 9. WHAT THE ENGAGEMENT ESTABLISHED ── */}
             <section className="py-28 bg-white border-b border-black">
                 <div className="container mx-auto px-6">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Strategic Transformation</span>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Strategic Deliverables</span>
                         <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            From Idea to a Working Growth System
+                            What the Engagement Established
                         </h2>
+                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
+                            Beyond early traction, the engagement equipped Craftsquarre with a durable strategic, creative, and operational marketing foundation.
+                        </p>
                     </motion.div>
 
-                    {/* 5 Visual Transformation Cards */}
+                    {/* 5 Transformation Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                         {[
-                            { title: "Clearer Positioning", desc: "Craftsquarre developed a clearer understanding of what it represents and who it serves." },
-                            { title: "Stronger Brand", desc: "A complete brand identity and consistent communication system were established." },
-                            { title: "Repeatable Content", desc: "The team developed a content engine that could consistently tell merchant and platform stories." },
-                            { title: "Merchant Growth", desc: "A repeatable acquisition system began bringing merchants onto the platform." },
-                            { title: "Early Traction", desc: "The platform reached 100+ merchants, 150+ buyers, and over ₦700K in sales." }
+                            {
+                                title: "Brand Identity & Positioning",
+                                desc: "Complete visual identity, typography standards, logo assets, and strategic positioning in 'Curated Creativity' for clear market distinction."
+                            },
+                            {
+                                title: "Content Strategy & Direction",
+                                desc: "Creative direction and visual standards across studio photography, artisan video shoots, and campaign collateral."
+                            },
+                            {
+                                title: "Product Marketing & Acquisition",
+                                desc: "Storefront guidelines, buyer value communication, and merchant onboarding materials supporting initial platform adoption."
+                            },
+                            {
+                                title: "Campaigns & Launch Planning",
+                                desc: "Structured go-to-market rollout framework, channel messaging, and digital campaign planning connecting makers with early buyers."
+                            },
+                            {
+                                title: "Content Systems & Execution",
+                                desc: "Repeatable four-pillar content engine enabling continuous merchant spotlights, category education, and independent execution."
+                            }
                         ].map((card, idx) => (
-                            <div key={idx} className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between">
+                            <motion.div
+                                key={idx}
+                                variants={fadeUp}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.08 }}
+                                className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between"
+                            >
                                 <span className="text-2xl font-black text-primary mb-3 block">0{idx + 1}</span>
                                 <h3 className="text-base font-black uppercase tracking-tight text-black mb-2">{card.title}</h3>
                                 <p className="text-xs font-medium text-gray-700 leading-relaxed">{card.desc}</p>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
 
-            {/* ── 15. THE BUSINESS MODEL INSIGHT ── */}
-            <section className="py-28 bg-gray-50 border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Marketplace Economics</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            The Marketplace Has Two Customers
-                        </h2>
-                    </motion.div>
-
-                    {/* Side by Side Comparison */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                        <div className="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Customer 01</span>
-                            <h3 className="text-2xl font-black text-black uppercase mb-4">MERCHANT NEEDS</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {["Visibility", "Sales opportunities", "Support", "Credibility", "Marketing"].map(item => (
-                                    <span key={item} className="px-3 py-1.5 bg-black text-white text-xs font-bold uppercase tracking-wider">{item}</span>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                            <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">Customer 02</span>
-                            <h3 className="text-2xl font-black text-black uppercase mb-4">BUYER NEEDS</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {["Discovery", "Trust", "Quality", "Variety", "Convenience"].map(item => (
-                                    <span key={item} className="px-3 py-1.5 bg-primary text-white text-xs font-bold uppercase tracking-wider">{item}</span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-black text-white p-8 border-4 border-black">
-                        <p className="text-lg font-bold leading-relaxed">
-                            Craftsquarre's marketing strategy had to create value for both sides simultaneously: <strong className="text-primary">More merchants create more products &rarr; More products create better buyer choice &rarr; More buyers create more value for merchants.</strong>
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ── 16. WHAT WE WOULD DO NEXT (ROADMAP) ── */}
-            <section className="py-28 bg-white border-b border-black">
-                <div className="container mx-auto px-6">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Future Strategy</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            The Next Growth Phase
-                        </h2>
-                        <p className="text-lg md:text-xl font-bold text-gray-800 leading-relaxed border-l-4 border-primary pl-5">
-                            Strategic recommendations for the next phase of marketplace expansion:
-                        </p>
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-                        {[
-                            { num: "01", title: "Amplify the Brand", desc: "Work with carefully selected creators and influencers to increase awareness and merchant acquisition." },
-                            { num: "02", title: "Scale Merchant Acquisition", desc: "Use existing content and merchant storytelling as foundation for larger acquisition campaigns." },
-                            { num: "03", title: "Launch the Merchant App", desc: "Use the app launch as a major communication and acquisition moment." },
-                            { num: "04", title: "Accelerate Buyer Acquisition", desc: "Introduce campaigns designed specifically to bring more buyers onto the platform." },
-                            { num: "05", title: "Build Demand Around Local Creativity", desc: "Explore campaigns around discovering quality Nigerian-made products at accessible price points." }
-                        ].map((next, idx) => (
-                            <div key={idx} className="bg-gray-50 border-2 border-black p-6 hover:border-primary transition-colors flex flex-col justify-between">
-                                <div>
-                                    <span className="text-2xl font-black text-primary mb-3 block">{next.num}</span>
-                                    <h3 className="text-sm font-black uppercase tracking-tight text-black mb-2">{next.title}</h3>
-                                    <p className="text-xs font-medium text-gray-600 leading-relaxed">{next.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ── 17. LESSONS ── */}
+            {/* ── 10. STRATEGIC TAKEAWAYS & CONCLUSION ── */}
             <section className="py-28 bg-gray-50 border-b border-black">
                 <div className="container mx-auto px-6">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="max-w-4xl mb-16">
                         <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Strategic Takeaways</span>
                         <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-6">
-                            What This Project Reinforced
+                            Key Principles Reinforced
                         </h2>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
                         {[
                             {
                                 num: "01",
-                                title: "A marketplace is a trust business.",
-                                desc: "People need confidence before they buy or sell."
+                                title: "Marketplaces are trust businesses.",
+                                desc: "Before buyers purchase or merchants commit inventory, both sides must have confidence in platform credibility, payment security, and fulfillment standards."
                             },
                             {
                                 num: "02",
-                                title: "Stories can become acquisition channels.",
-                                desc: "When customers and merchants become part of the brand story, content can drive discovery and referrals."
+                                title: "Stories drive authentic discovery.",
+                                desc: "Celebrating the makers and artisan craft behind products connects emotionally with audiences far more effectively than generic product listings."
                             },
                             {
                                 num: "03",
-                                title: "Early-stage growth requires systems, not just campaigns.",
-                                desc: "The objective was to create a repeatable marketing engine that could continue working as the platform grew."
+                                title: "Early growth demands connected systems.",
+                                desc: "Sporadic campaigns provide temporary spikes; sustainable traction requires positioning, product marketing, and content working in unison."
                             }
                         ].map((lesson, idx) => (
-                            <div key={idx} className="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:border-primary transition-colors">
+                            <motion.div
+                                key={idx}
+                                variants={fadeUp}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:border-primary transition-colors"
+                            >
                                 <span className="text-3xl font-black text-primary mb-4 block">{lesson.num}</span>
                                 <h3 className="text-xl font-black uppercase tracking-tight text-black mb-3">{lesson.title}</h3>
                                 <p className="text-sm font-medium text-gray-700 leading-relaxed border-l-2 border-gray-200 pl-3">{lesson.desc}</p>
-                            </div>
+                            </motion.div>
                         ))}
+                    </div>
+
+                    {/* Editorial Conclusion */}
+                    <div className="max-w-4xl bg-white border-4 border-black p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Conclusion</span>
+                        <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-black mb-6">
+                            Build the Foundation. <span className="text-primary">Then Scale It.</span>
+                        </h3>
+                        <div className="space-y-6 text-black/80 font-bold text-lg md:text-xl leading-relaxed border-l-4 border-primary pl-6">
+                            <p>
+                                Craftsquarre represents the potential of Nigerian creativity brought together on a dedicated platform.
+                            </p>
+                            <p>
+                                By establishing a clear brand identity, an expanded positioning in curated creativity, and an authentic content storytelling engine, the engagement delivered a cohesive system that connects creators with buyers.
+                            </p>
+                            <p className="text-black font-black text-2xl">
+                                With a clear brand foundation in place, the platform is prepared to continue its mission of helping local creativity get discovered.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
 
 
-            {/* ── 18. FINAL CASE STUDY STATEMENT ── */}
-            <section className="py-28 bg-white border-b border-black">
-                <div className="container mx-auto px-6 max-w-4xl">
-                    <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 block">Conclusion</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black mb-8">
-                            Build the Foundation. <span className="text-primary">Then Scale It.</span>
-                        </h2>
-                        <div className="space-y-6 text-black/80 font-bold text-lg md:text-xl leading-relaxed border-l-4 border-primary pl-6">
-                            <p>
-                                Craftsquarre is still growing. But the foundation is clearer.
-                            </p>
-                            <p>
-                                The brand has a stronger position, merchants have a reason to participate, stories give the marketplace a human voice, and the marketing team now has a repeatable system for driving discovery.
-                            </p>
-                            <p className="text-black font-black text-2xl">
-                                The next phase is not about starting again. It's about amplifying what already works.
-                            </p>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-
-            {/* ── 19. FINAL CALL TO ACTION ── */}
+            {/* ── 11. CALL TO ACTION & SITE NAVIGATION ── */}
             <section className="py-32 bg-black text-white">
                 <div className="container mx-auto px-6 text-center max-w-4xl">
                     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
@@ -899,7 +743,7 @@ export default function CraftsquarreCaseStudy() {
                             <span className="text-primary">Growth Potential?</span>
                         </h2>
                         <p className="text-xl md:text-2xl font-bold text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
-                            Whether you're launching, repositioning, or trying to turn scattered marketing into a growth system, Lofty Brands helps you find the strategy behind the next stage.
+                            Whether you're launching a new venture, repositioning an existing product, or turning disconnected marketing into a repeatable system, Lofty Brands helps ambitious businesses build the strategy behind sustainable growth.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-5 justify-center">
                             <button

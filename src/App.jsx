@@ -13,6 +13,7 @@ import CraftsquarreCaseStudy from './pages/CraftsquarreCaseStudy';
 import MenoHavenCaseStudy from './pages/MenoHavenCaseStudy';
 import Legal from './pages/Legal';
 import Fellowship from './pages/Fellowship';
+import GrowthSprint from './pages/GrowthSprint';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,6 +29,8 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
+          <Route path="sprint" element={<GrowthSprint />} />
+          <Route path="growth-sprint" element={<GrowthSprint />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="blog" element={<Blog />} />
