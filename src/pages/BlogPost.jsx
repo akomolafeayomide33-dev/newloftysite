@@ -89,7 +89,7 @@ const BlogPost = () => {
                             <Linkedin size={20} />
                         </button>
                         <button
-                            onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(title)}`, '_blank')}
+                            onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}`, '_blank')}
                             className="p-3 border-2 border-black hover:bg-[#1DA1F2] hover:border-[#1DA1F2] hover:text-white transition-all transform hover:-translate-y-1"
                             title="Share on Twitter"
                         >
