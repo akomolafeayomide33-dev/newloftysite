@@ -1,11 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-    ArrowRight, CheckCircle2, ChevronDown, ChevronUp, Sparkles, 
-    Layers, Target, Megaphone, ShieldCheck, TrendingUp, BadgeCheck,
-    Play, Eye, ArrowUpRight, Instagram, Users, Award, BarChart3, 
-    X, Check, XCircle
+    ArrowRight, CheckCircle2, ChevronDown, ChevronUp,
+    Layers, Target, Megaphone, ShieldCheck, 
+    Play, Eye, ArrowUpRight, Check, XCircle, X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+// ==========================================
+// CONFIGURATION CONSTANTS
+// ==========================================
+export const WHATSAPP_NUMBER = '2348160735987';
+export const META_PIXEL_ID = ''; // Enter Meta Pixel ID here when ready (e.g. '1234567890')
+export const FORMSPREE_FORM_ID = 'mqppggkg'; // Formspree Form ID: https://formspree.io/f/mqppggkg
+
+const WHATSAPP_PREFILLED_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Lofty Brands, I'd like to book the 30-Day Growth Sprint.")}`;
+
+// Meta Pixel tracking helper
+const trackPixelEvent = (event, params = {}) => {
+    if (typeof window !== 'undefined' && window.fbq && META_PIXEL_ID) {
+        window.fbq('track', event, params);
+    }
+};
 
 const faqs = [
     {
@@ -14,31 +29,35 @@ const faqs = [
     },
     {
         q: "How many posts and videos will I get?",
-        a: "We build for sales and conversion, and every post and ad is designed to bring buyers. You get 8 strategic feed posts: 3 high-converting videos, 3 educational carousels, and 2 offer spotlights, complete profile optimization, and a Meta ad campaign with 3 to 4 tested ad creatives, set up and managed on Instagram and Facebook. Retargeting added for larger budgets."
+        a: "You get 8 content pieces: 3 short-form videos, 3 educational carousels, and 2 offer-focused posts. You also get profile optimisation and a Meta ad campaign with 3 to 4 tested creatives, set up and managed on Instagram and Facebook. Retargeting is added for larger budgets. Everything is built to bring buyers to your business."
     },
     {
         q: "How much should I spend on ads?",
-        a: "Ad spend is completely separate and paid directly to Meta from your own card. For this 30-day sprint, we recommend an initial testing budget between ₦50,000 and ₦150,000. We set strict daily budget limits so every naira is tested efficiently against real buyer inquiries."
+        a: "Ad spend is separate and paid directly to Meta from your own card. For this 30-day sprint, we recommend a testing budget between ₦50,000 and ₦150,000. We set strict daily limits so every naira is tested against real buyer inquiries."
     },
     {
         q: "Do I need to be on camera or hire a videographer?",
-        a: "Not at all. You provide raw footage and photos (simple smartphone clips of your products, behind-the-scenes processes, packaging, or customer reviews), and we edit and design everything. Includes 2 rounds of revisions per piece. If you do want to be on camera, we write the exact word-for-word scripts for you."
+        a: "No. You send raw footage and photos (simple smartphone clips of your products, behind-the-scenes work, packaging, or customer reviews), and we edit and design everything. Includes 2 rounds of revisions per piece. If you want to be on camera, we write word-for-word scripts for you."
     },
     {
         q: "What if my existing photos or videos aren't good enough?",
-        a: "Don't worry. Most clients start with everyday phone clips. In Week 1, we provide a simple shot list showing the exact 10-second angles to capture using natural light. Our team handles the professional voiceovers, text hooks, editing, and sound design to make your brand look world-class."
+        a: "Most clients start with everyday phone clips. In Week 1, we send a simple shot list with the exact 10-second angles to capture in natural light. We handle text hooks, editing, and sound design to make your brand look polished."
     },
     {
         q: "Can your team come to my location to shoot?",
-        a: "The sprint is designed to run 100% remotely with minimal effort from you. If your brand requires on-site production, we offer a dedicated half-day studio or location shoot package as an optional add-on within Lagos."
+        a: "The sprint runs 100% remotely. If your brand needs on-site production, we offer a half-day location shoot as an optional add-on within Lagos. Ask us for the rate."
     },
     {
         q: "How will we communicate during the 30 days?",
-        a: "You will be placed in a private, dedicated WhatsApp workspace with your lead strategist and creative team for fast, real-time approvals and direct communication. You also receive a weekly Friday recap showing ad spend, leads delivered, and live campaign status."
+        a: "You join a private WhatsApp group with your lead strategist and creative team for fast approvals and direct communication. Every Friday you get a recap of ad spend, leads, tracked sales, and live campaign status."
     },
     {
         q: "What happens after the 30 days are over?",
-        a: "On Day 30, we deliver your 30-day performance review deck detailing your top-performing ads, acquired leads, and cost metrics. If you want us to keep scaling your campaigns, we can transition into an ongoing monthly partnership. If not, you retain all final creative assets, copy templates, and ad account builds."
+        a: "On Day 30, we deliver your performance review: what we executed, how your ads performed, what worked, what needs improvement, and our recommended next steps. If you want us to keep scaling, we can move into an ongoing monthly partnership. Otherwise you keep all final creative assets, copy templates, and ad account builds."
+    },
+    {
+        q: "Do you guarantee sales?",
+        a: "We guarantee delivery of the 8 content pieces, the tested ad campaign, weekly reports, and a clear plan for what comes next. Sales depend on your offer, your budget, and your market, and your report shows exactly what each ad produced."
     }
 ];
 
@@ -52,24 +71,69 @@ function getYouTubeEmbedUrl(url) {
 export default function GrowthSprint() {
     const [openFaq, setOpenFaq] = useState(0);
     const [showCampaignBreakdown, setShowCampaignBreakdown] = useState(false);
-    const [showMoreWork, setShowMoreWork] = useState(false);
+    const [showMoreResults, setShowMoreResults] = useState(false);
     const [showSticky, setShowSticky] = useState(false);
 
+    // Form state
     const [formData, setFormData] = useState({
         name: '',
         businessName: '',
         email: '',
         phone: '',
-        businessCategory: 'E-Commerce / Retail',
-        marketingGoal: ''
+        businessCategory: '',
+        marketingGoal: '',
+        adBudget: ''
     });
-    const [submitted, setSubmitted] = useState(false);
+    const [honeypot, setHoneypot] = useState('');
+    const [utmParams, setUtmParams] = useState({
+        utm_source: '',
+        utm_medium: '',
+        utm_campaign: ''
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [submitError, setSubmitError] = useState('');
+
     const [activeProofModal, setActiveProofModal] = useState(null);
     const [activeVideoModal, setActiveVideoModal] = useState(null);
     const videoPlayerRef = useRef(null);
 
-    // Scroll listener for sticky bar so it never covers hero on first load or interferes with form
+    // Set page title & capture UTM parameters
+    useEffect(() => {
+        document.title = "30-Day Growth Sprint | Lofty Brands";
+        
+        // Capture UTM parameters from URL
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            setUtmParams({
+                utm_source: params.get('utm_source') || '',
+                utm_medium: params.get('utm_medium') || '',
+                utm_campaign: params.get('utm_campaign') || ''
+            });
+        }
+    }, []);
+
+    // Meta Pixel loader
+    useEffect(() => {
+        if (!META_PIXEL_ID || typeof window === 'undefined') return;
+
+        if (!window.fbq) {
+            (function(f,b,e,v,n,t,s) {
+                if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s);
+            })(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+            window.fbq('init', META_PIXEL_ID);
+        }
+        window.fbq('track', 'PageView');
+    }, []);
+
+    // Scroll listener for sticky bar:
+    // Only shows after scrolling past the hero button, and hides when near the final form
     useEffect(() => {
         const handleScroll = () => {
             const sprintEl = document.getElementById('the-sprint');
@@ -77,9 +141,8 @@ export default function GrowthSprint() {
             
             if (sprintEl) {
                 const sprintRect = sprintEl.getBoundingClientRect();
-                const pastHero = sprintRect.top <= 100;
+                const pastHero = sprintRect.top <= 120;
                 
-                // Hide sticky bar when form is already in view to avoid redundancy & keyboard conflicts
                 let nearForm = false;
                 if (formEl) {
                     const formRect = formEl.getBoundingClientRect();
@@ -88,14 +151,16 @@ export default function GrowthSprint() {
                 
                 setShowSticky(pastHero && !nearForm);
             } else {
-                setShowSticky(window.scrollY > 800);
+                setShowSticky(window.scrollY > 750);
             }
         };
+
         window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Auto-play videos in modal
     useEffect(() => {
         if (activeVideoModal?.videoSrc && videoPlayerRef.current) {
             const playPromise = videoPlayerRef.current.play();
@@ -117,38 +182,120 @@ export default function GrowthSprint() {
         }
     };
 
+    const handleWhatsAppClick = () => {
+        trackPixelEvent('Contact', { channel: 'WhatsApp' });
+    };
+
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (submitError) setSubmitError('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
 
-        const emailSubject = encodeURIComponent(`30-Day Growth Sprint Application: ${formData.businessName || formData.name}`);
-        const emailBody = encodeURIComponent(
-            `Name: ${formData.name}\n` +
-            `Business Name: ${formData.businessName}\n` +
-            `Work Email: ${formData.email}\n` +
-            `WhatsApp/Phone: ${formData.phone}\n` +
-            `Business Category: ${formData.businessCategory}\n\n` +
-            `Primary Goal For This Month:\n${formData.marketingGoal}\n`
-        );
-
-        window.location.href = `mailto:Loftybrands@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-
-        setTimeout(() => {
-            setIsSubmitting(false);
+        // Spam honeypot detection
+        if (honeypot) {
             setSubmitted(true);
-        }, 600);
+            return;
+        }
+
+        // Phone validation (+234 friendly)
+        const cleanPhone = formData.phone.replace(/[\s\-()]/g, '');
+        if (cleanPhone.length < 10) {
+            setSubmitError('Please enter a valid phone number (at least 10 digits).');
+            return;
+        }
+
+        if (!formData.businessCategory) {
+            setSubmitError('Please select a business category.');
+            return;
+        }
+
+        if (!formData.adBudget) {
+            setSubmitError('Please select your planned ad budget.');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setSubmitError('');
+
+        const payload = {
+            name: formData.name,
+            businessName: formData.businessName,
+            email: formData.email,
+            phone: formData.phone,
+            businessCategory: formData.businessCategory,
+            marketingGoal: formData.marketingGoal,
+            adBudget: formData.adBudget,
+            utm_source: utmParams.utm_source,
+            utm_medium: utmParams.utm_medium,
+            utm_campaign: utmParams.utm_campaign,
+            submittedAt: new Date().toISOString()
+        };
+
+        try {
+            // Submit to Formspree endpoint if configured
+            if (FORMSPREE_FORM_ID && FORMSPREE_FORM_ID !== 'YOUR_FORM_ID') {
+                const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    trackPixelEvent('Lead', {
+                        currency: 'NGN',
+                        value: 199000,
+                        content_name: '30-Day Growth Sprint'
+                    });
+                    setSubmitted(true);
+                } else {
+                    const data = await response.json().catch(() => ({}));
+                    throw new Error(data.error || 'Submission failed. Please try again or chat with us on WhatsApp.');
+                }
+            } else {
+                // If form key is not set, simulate successful intake and open mailto as fallback
+                const emailSubject = encodeURIComponent(`30-Day Growth Sprint Application: ${formData.businessName || formData.name}`);
+                const emailBody = encodeURIComponent(
+                    `Name: ${formData.name}\n` +
+                    `Business Name: ${formData.businessName}\n` +
+                    `Email: ${formData.email}\n` +
+                    `WhatsApp / Phone: ${formData.phone}\n` +
+                    `Business Category: ${formData.businessCategory}\n` +
+                    `Ad Budget: ${formData.adBudget}\n\n` +
+                    `Primary Goal For This Month:\n${formData.marketingGoal}\n\n` +
+                    `UTM Source: ${utmParams.utm_source || 'direct'}\n` +
+                    `UTM Medium: ${utmParams.utm_medium || 'none'}\n` +
+                    `UTM Campaign: ${utmParams.utm_campaign || 'none'}`
+                );
+                window.location.href = `mailto:loftybrands@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+
+                trackPixelEvent('Lead', {
+                    currency: 'NGN',
+                    value: 199000,
+                    content_name: '30-Day Growth Sprint'
+                });
+                setSubmitted(true);
+            }
+        } catch (err) {
+            setSubmitError(err.message || 'There was an issue sending your details. Please try again or chat with us on WhatsApp.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
+
+    const userFirstName = formData.name.trim().split(' ')[0] || 'there';
 
     return (
-        <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background text-black font-sans selection:bg-primary selection:text-white pb-20 md:pb-0">
+        <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background text-black font-sans selection:bg-primary selection:text-white pb-28 md:pb-0">
             
             {/* MINIMAL STANDALONE NAVIGATION */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-black">
-                <div className="container mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+                <div className="container mx-auto px-5 sm:px-6 h-20 flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3 group">
                         <img 
                             src="/lofty-logo-header.png" 
@@ -169,26 +316,25 @@ export default function GrowthSprint() {
 
                     <button 
                         onClick={scrollToForm}
-                        className="px-4 sm:px-6 py-2.5 sm:py-3 min-h-[44px] sm:min-h-[48px] bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-black transition-all border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] shrink-0"
+                        className="px-4 sm:px-6 py-2.5 sm:py-3 min-h-[48px] bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-black transition-all border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] shrink-0"
                     >
                         Book your sprint
                     </button>
                 </div>
             </header>
 
-            {/* 1. HERO SECTION */}
+            {/* 2. HERO SECTION */}
             <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-12 sm:py-16 md:py-24 bg-background border-b-2 border-black">
                 {/* Background Grid Texture */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e5e5_1px,transparent_1px),linear-gradient(to_bottom,#e5e5e5_1px,transparent_1px)] bg-[size:6rem_6rem] pointer-events-none" />
 
                 <div className="container mx-auto px-5 sm:px-6 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start lg:items-center">
                         
-                        <div className="lg:col-span-7">
-                            {/* Scarcity badge */}
-                            <div className="inline-flex items-center gap-2 py-2 px-3 sm:px-4 bg-black text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest mb-6 border-2 border-black shadow-[3px_3px_0px_0px_rgba(255,94,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(255,94,0,1)]">
-                                <span className="w-2 h-2 bg-primary rounded-full animate-ping" />
-                                5 spots left for November
+                        <div className="lg:col-span-7 flex flex-col items-start">
+                            {/* Scarcity badge: Static text, no number */}
+                            <div className="inline-flex items-center py-2 px-3 sm:px-4 bg-black text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest mb-6 border-2 border-black shadow-[3px_3px_0px_0px_rgba(255,94,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(255,94,0,1)]">
+                                ONLY 10 BUSINESSES TAKEN PER MONTH
                             </div>
 
                             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.0] sm:leading-[0.95] mb-6 text-black tracking-tight sm:tracking-tighter uppercase break-words">
@@ -199,25 +345,28 @@ export default function GrowthSprint() {
                                 </span>
                             </h1>
 
-                            {/* Shortened two-line paragraph, sentence case, min 16px, line-height 1.6 */}
-                            <p className="text-base sm:text-lg text-black/85 max-w-xl mb-8 border-l-4 border-primary pl-4 sm:pl-5 py-1 leading-[1.6]">
+                            {/* Supporting line */}
+                            <p className="text-base sm:text-lg text-black/85 max-w-xl mb-6 border-l-4 border-primary pl-4 sm:pl-5 py-1 leading-[1.6]">
                                 We plan, create, and run your marketing for 30 days. You focus on your business.
                             </p>
 
-                            {/* AUTHENTIC PROOF BADGE (Hero proof box with thick border & offset shadow) */}
-                            <div className="bg-white border-2 border-black p-4 sm:p-5 mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex items-start sm:items-center gap-3 sm:gap-4">
+                            {/* Hero proof box: Clean spacing without overlap or clipping */}
+                            <div className="w-full max-w-xl bg-white border-2 border-black p-4 sm:p-5 mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex items-start sm:items-center gap-3 sm:gap-4">
                                 <div className="p-2.5 sm:p-3 bg-primary/10 border-2 border-primary text-primary shrink-0">
-                                    <BadgeCheck size={24} strokeWidth={2.5} />
+                                    <ShieldCheck size={24} strokeWidth={2.5} />
                                 </div>
                                 <div>
-                                    <span className="block text-[10px] font-black uppercase tracking-widest text-primary mb-0.5">Verified results</span>
+                                    <span className="block text-[10px] font-black uppercase tracking-widest text-primary mb-0.5">
+                                        CLIENT RESULTS
+                                    </span>
                                     <p className="text-base font-medium text-black leading-[1.6]">
-                                        Trusted by 20+ growing brands • 3 million+ views & thousands of real customer inquiries generated.
+                                        Marketing led for 10+ brands. 3 million+ views generated.
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="pt-2">
+                            {/* Hero Button: Only the button, no ad spend or fill-form text */}
+                            <div>
                                 <button 
                                     onClick={scrollToForm}
                                     className="w-full sm:w-auto px-8 py-4 min-h-[48px] bg-primary text-white font-black text-sm uppercase tracking-widest hover:bg-black transition-all flex items-center justify-center gap-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
@@ -227,124 +376,110 @@ export default function GrowthSprint() {
                             </div>
                         </div>
 
-                        {/* HERO SPRINT CAMPAIGN DASHBOARD - SPACING FIXED (NO OVERLAP) */}
-                        <div className="lg:col-span-5 flex flex-col gap-6">
-                            {/* Top Ad Engine Card */}
+                        {/* HERO SPRINT CARDS COLUMN - CLEAN VERTICAL STACKING, NO OVERLAP */}
+                        <div className="lg:col-span-5 flex flex-col gap-6 w-full">
+                            
+                            {/* Black Card: Results from real client campaigns */}
                             <div className="bg-black text-white border-2 border-black p-5 sm:p-6 md:p-8">
                                 <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-gray-800">
-                                    <div className="inline-flex items-center gap-2 px-2.5 sm:px-3 py-1 bg-green-500/20 border border-green-500/40 text-green-400 text-[11px] sm:text-xs font-black uppercase tracking-wider shrink-0">
-                                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" />
-                                        Campaign Snapshot
-                                    </div>
+                                    <span className="text-xs font-black uppercase tracking-wider text-gray-300">
+                                        Results from real client campaigns
+                                    </span>
                                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 shrink-0">
-                                        30-Day Sprint
+                                        30-day sprint
                                     </span>
                                 </div>
 
                                 <div className="mb-6">
                                     <span className="text-[10px] font-black uppercase tracking-widest text-primary block mb-1">
-                                        Peak Campaign Output
+                                        Best result: PS5 sales campaign
                                     </span>
                                     <div className="flex items-baseline gap-2">
                                         <span className="text-4xl sm:text-5xl font-black text-white tracking-tighter">
                                             9.45x
                                         </span>
-                                        <span className="text-xs sm:text-sm font-black uppercase text-gray-300">
-                                            Return on Ad Spend
-                                        </span>
                                     </div>
+                                    <p className="text-sm font-bold text-gray-300 mt-1">
+                                        Every $1 spent on ads brought back $9.45 in sales
+                                    </p>
                                 </div>
 
-                                {/* Upward Growth Chart Line */}
-                                <div className="border border-gray-800 bg-gray-950/80 p-3 sm:p-4 mb-4">
-                                    <div className="flex justify-between items-center text-[10px] font-black uppercase text-gray-400 mb-2">
-                                        <span>Week 1 Kickoff</span>
-                                        <span className="text-primary font-black flex items-center gap-1">
-                                            <TrendingUp size={12} /> Week 4 Scale
+                                {/* Two small boxes */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-black uppercase">
+                                    <div className="bg-gray-900 border border-gray-800 p-3 flex flex-col justify-between">
+                                        <div>
+                                            <span className="text-primary text-[9px] tracking-wider block mb-1">TOSSE CAMPAIGN</span>
+                                            <span className="text-white text-xs sm:text-sm block font-black leading-tight">
+                                                1,497 event registrations
+                                            </span>
+                                        </div>
+                                        <span className="text-[11px] text-gray-400 block mt-2 font-normal lowercase">
+                                            ₦40.80 each
                                         </span>
                                     </div>
-                                    <svg className="w-full h-14" viewBox="0 0 300 60" fill="none" preserveAspectRatio="none">
-                                        <path 
-                                            d="M0 50 Q 60 48, 100 38 T 190 24 T 300 6" 
-                                            stroke="#FF5E00" 
-                                            strokeWidth="3.5" 
-                                            strokeLinecap="round"
-                                        />
-                                        <path 
-                                            d="M0 50 Q 60 48, 100 38 T 190 24 T 300 6 L 300 60 L 0 60 Z" 
-                                            fill="url(#sprintGrad)" 
-                                            opacity="0.25"
-                                        />
-                                        <defs>
-                                            <linearGradient id="sprintGrad" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="0%" stopColor="#FF5E00" />
-                                                <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-                                            </linearGradient>
-                                        </defs>
-                                    </svg>
-                                </div>
 
-                                <div className="grid grid-cols-2 gap-2 sm:gap-3 text-[11px] font-black uppercase">
-                                    <div className="bg-gray-900 border border-gray-800 p-2 sm:p-2.5">
-                                        <span className="text-gray-400 block text-[9px]">Verified Leads</span>
-                                        <span className="text-white text-[11px] sm:text-xs block font-black leading-tight">1,497 Registrations</span>
-                                        <span className="text-[9px] text-gray-400 block mt-0.5 font-normal">₦40.80 / reg</span>
-                                    </div>
-                                    <div className="bg-gray-900 border border-gray-800 p-2 sm:p-2.5">
-                                        <span className="text-gray-400 block text-[9px]">Lead Cost</span>
-                                        <span className="text-primary text-[11px] sm:text-xs block font-black leading-tight">₦47.27</span>
-                                        <span className="text-[9px] text-gray-400 block mt-0.5 font-normal">per conversation</span>
+                                    <div className="bg-gray-900 border border-gray-800 p-3 flex flex-col justify-between">
+                                        <div>
+                                            <span className="text-primary text-[9px] tracking-wider block mb-1">TOSSE CAMPAIGN</span>
+                                            <span className="text-white text-xs sm:text-sm block font-black leading-tight">
+                                                1,292 conversations
+                                            </span>
+                                        </div>
+                                        <span className="text-[11px] text-gray-400 block mt-2 font-normal lowercase">
+                                            ₦47.27 each
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Creative Preview Card - Clean layout below stats with no overlap */}
+                            {/* White Card: A video from our work: Pakam */}
                             <div 
                                 onClick={() => setActiveVideoModal({
-                                    title: "Pakam Viral Campaign Story",
-                                    videoSrc: "/videos/pakam-viral-1.mp4",
+                                    title: "Pakam Story Reel",
+                                    videoSrc: "/videos/pakam-campaign-1.mp4",
                                     poster: "/proof/pakam-tiktok-profile.png",
                                     platform: "TikTok",
                                     url: "https://www.tiktok.com/@pakamnigeria_",
                                     caption: "3 million+ views generated from authentic, hook-driven storytelling."
                                 })}
-                                className="cursor-pointer bg-white border border-gray-200 p-4 transition-all hover:border-black group"
+                                className="cursor-pointer bg-white border-2 border-black p-4 sm:p-5 transition-all hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group"
                             >
                                 <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0" />
-                                        <span className="text-xs font-black uppercase text-black">Live Creative Asset</span>
-                                    </div>
+                                    <span className="text-xs font-black uppercase text-black">
+                                        A video from our work: Pakam
+                                    </span>
                                     <span className="text-[10px] font-black uppercase tracking-wider bg-black text-white px-2 py-0.5 shrink-0">
-                                        470K+ Views
+                                        470K+ views
                                     </span>
                                 </div>
 
                                 <div className="relative aspect-[16/9] bg-black border border-gray-200 overflow-hidden flex items-center justify-center">
                                     <img 
                                         src="/proof/pakam-tiktok-profile.png" 
-                                        alt="Campaign preview" 
-                                        className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-300"
+                                        alt="Pakam campaign video preview" 
+                                        loading="eager"
+                                        className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-300"
                                     />
-                                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                    <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
                                         <div className="px-3 sm:px-4 py-2 bg-primary text-white border-2 border-black font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2 group-hover:scale-105 transition-transform min-h-[44px]">
                                             <Play size={14} className="fill-white shrink-0" />
-                                            Play Campaign Reel
+                                            Play Video
                                         </div>
                                     </div>
                                 </div>
-                                <div className="pt-2 text-[10px] font-black uppercase text-gray-500 flex justify-between items-center">
-                                    <span>Click to Watch Preview</span>
-                                    <span className="text-primary font-bold">Watch Video →</span>
+
+                                <div className="pt-3 text-[11px] font-black uppercase flex justify-end items-center">
+                                    <span className="text-primary font-bold hover:underline">Watch video →</span>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
                 </div>
             </section>
 
-            {/* 2. THE SPRINT (PROBLEM & WORKFLOW) */}
+            {/* 3. THE SPRINT (PROBLEM & PILLARS) */}
             <section id="the-sprint" className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-white">
                 <div className="container mx-auto px-5 sm:px-6 max-w-6xl">
                     <div className="max-w-4xl mb-12 sm:mb-16">
@@ -352,15 +487,18 @@ export default function GrowthSprint() {
                             The 30-Day Solution
                         </span>
                         <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black uppercase tracking-tight sm:tracking-tighter leading-[1.05] sm:leading-[0.95] mb-6">
-                            You Have a Great Business. <br className="hidden sm:inline" />
-                            <span className="text-primary">You Just Need Marketing That Actually Brings Customers.</span>
+                            YOU HAVE A GREAT BUSINESS. <br className="hidden sm:inline" />
+                            <span className="text-primary">YOU JUST NEED MARKETING THAT ACTUALLY BRINGS CUSTOMERS.</span>
                         </h2>
-                        <p className="text-base sm:text-lg text-black/80 border-l-4 border-primary pl-4 sm:pl-5 py-2 leading-[1.6]">
-                            Running a business while trying to write captions, edit videos, and figure out ads is exhausting. When marketing is scattered, it stops working. We bring everything together so your marketing runs every single day without you stressing over it.
+                        <p className="text-base sm:text-lg text-black/80 border-l-4 border-primary pl-4 sm:pl-5 py-2 leading-[1.6] mb-8">
+                            Running a business while writing captions, editing videos, and figuring out ads is exhausting. Scattered marketing stalls. We bring planning, content, and ads together so your marketing keeps moving all month.
+                        </p>
+                        <p className="text-base sm:text-lg font-bold text-black uppercase tracking-wide">
+                            One plan. One creative team. One ad budget, working together.
                         </p>
                     </div>
 
-                    {/* THE 3 EXECUTION PILLARS - 1px light grey border, white bg, no shadow */}
+                    {/* THE 3 EXECUTION PILLARS */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                         {/* PILLAR 1 */}
                         <div className="bg-white border border-gray-200 p-6 sm:p-8 flex flex-col justify-between">
@@ -369,9 +507,9 @@ export default function GrowthSprint() {
                                     <Target size={32} />
                                 </div>
                                 <span className="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Pillar 01</span>
-                                <h3 className="text-2xl font-black uppercase text-black mb-4">The Plan</h3>
+                                <h3 className="text-2xl font-black uppercase text-black mb-4">THE PLAN</h3>
                                 <p className="text-base text-gray-700 leading-[1.6] border-l-2 border-primary pl-4">
-                                    We look at your business, your buyers, and what you need to sell right now.
+                                    We study your business, your buyers, and what you need to sell right now, then map out the month's posts and ads.
                                 </p>
                             </div>
                         </div>
@@ -383,9 +521,9 @@ export default function GrowthSprint() {
                                     <Layers size={32} />
                                 </div>
                                 <span className="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Pillar 02</span>
-                                <h3 className="text-2xl font-black uppercase text-black mb-4">The Creative Work</h3>
+                                <h3 className="text-2xl font-black uppercase text-black mb-4">THE CREATIVE WORK</h3>
                                 <p className="text-base text-gray-700 leading-[1.6] border-l-2 border-primary pl-4">
-                                    We write, design, and edit the videos, posts, and graphics for your brand.
+                                    We write, design, and edit the videos, posts, and graphics from your plan, using the footage and photos you send.
                                 </p>
                             </div>
                         </div>
@@ -397,9 +535,9 @@ export default function GrowthSprint() {
                                     <Megaphone size={32} />
                                 </div>
                                 <span className="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Pillar 03</span>
-                                <h3 className="text-2xl font-black uppercase text-black mb-4">The Paid Ads</h3>
+                                <h3 className="text-2xl font-black uppercase text-black mb-4">THE PAID ADS</h3>
                                 <p className="text-base text-gray-700 leading-[1.6] border-l-2 border-primary pl-4 mb-6">
-                                    We run targeted ads on Meta (Instagram & Facebook) to put your products in front of people ready to buy.
+                                    We run Meta ads on Instagram and Facebook that put your products and services in front of the right buyers, using the creative we built.
                                 </p>
                             </div>
                             <div className="pt-4 border-t border-gray-200">
@@ -412,102 +550,55 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* 3. CASE STUDIES / VERIFIED RESULTS */}
+            {/* 4. RESULTS SECTION */}
             <section id="results" className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-surface">
                 <div className="container mx-auto px-5 sm:px-6 max-w-6xl">
                     <div className="mb-12 sm:mb-16 border-b-2 border-black pb-8 max-w-3xl">
                         <span className="text-primary font-black tracking-widest uppercase mb-2 block text-xs">
-                            Verified results
+                            CLIENT RESULTS
                         </span>
                         <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-black uppercase tracking-tight sm:tracking-tighter">
                             REAL WORK. REAL MARKETING.
                         </h2>
                         <p className="text-base sm:text-lg text-gray-700 font-medium mt-4 leading-[1.6]">
-                            We don't just talk about growth. Here's a look at the marketing work we've done and the results we've helped businesses achieve.
+                            Real campaigns. Real numbers. From brands we have worked with.
                         </p>
                     </div>
 
-                    {/* 3 CORE CASE STUDIES IN FULL - 1 large number, 1 line context, 1 view report link */}
+                    {/* MAIN 3 CARDS: PS5, PAKAM, TOSSE */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                         
-                        {/* 1. CRAFTSQUARRE CARD */}
+                        {/* CARD 1: PS5 SALES CAMPAIGN */}
                         <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
                             <div>
-                                <div className="flex flex-col gap-2 mb-6">
+                                <div className="flex flex-col gap-1.5 mb-6">
                                     <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-3 py-1">
-                                        Marketplace / Ecommerce
+                                        HIGH-TICKET ECOMMERCE
                                     </span>
                                     <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
-                                        Craftsquarre
+                                        PS5 SALES CAMPAIGN
                                     </h3>
-                                </div>
-
-                                {/* Prominent Measurable Result */}
-                                <div className="mb-6 p-4 sm:p-5 bg-surface border border-gray-200">
-                                    <span className="text-4xl sm:text-5xl font-black text-black tracking-tighter block">
-                                        100+
-                                    </span>
-                                    <span className="text-xs font-bold uppercase tracking-wider text-primary block mt-1">
-                                        Merchants Onboarded
-                                    </span>
-                                    <span className="text-xs text-gray-500 font-medium block mt-1">
-                                        100+ sellers & 150+ early buyers validated
+                                    <span className="text-xs font-bold text-gray-500 uppercase">
+                                        Overseas online store
                                     </span>
                                 </div>
 
-                                {/* Marketing Work Lofty Brands Delivered */}
-                                <div className="mb-6">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-1">
-                                        Work Delivered
-                                    </span>
-                                    <p className="text-base text-gray-700 leading-[1.6]">
-                                        Built brand positioning, creator content systems, and merchant acquisition campaigns to launch the MVP marketplace.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="pt-4 border-t border-gray-200">
-                                <Link
-                                    to="/work/craftsquarre"
-                                    className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
-                                >
-                                    <Eye size={14} /> View case study →
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* 2. OVERSEAS SALES CAMPAIGN (ROAS) CARD */}
-                        <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
-                            <div>
-                                <div className="flex flex-col gap-2 mb-6">
-                                    <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-3 py-1">
-                                        High-Ticket Ecommerce
-                                    </span>
-                                    <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
-                                        Overseas Sales Campaign
-                                    </h3>
-                                </div>
-
-                                {/* Prominent Measurable Result */}
+                                {/* Measurable Result */}
                                 <div className="mb-6 p-4 sm:p-5 bg-surface border border-gray-200">
                                     <span className="text-4xl sm:text-5xl font-black text-primary tracking-tighter block">
                                         9.45x
                                     </span>
                                     <span className="text-xs font-bold uppercase tracking-wider text-black block mt-1">
-                                        Return on Ad Spend (ROAS)
+                                        Return on ad spend (ROAS)
                                     </span>
                                     <span className="text-xs text-gray-500 font-medium block mt-1">
-                                        $7,793.00 revenue on $824.73 ad spend
+                                        $7,793 in sales from $824.73 ad spend
                                     </span>
                                 </div>
 
-                                {/* Marketing Work Lofty Brands Delivered */}
                                 <div className="mb-6">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-1">
-                                        Work Delivered
-                                    </span>
                                     <p className="text-base text-gray-700 leading-[1.6]">
-                                        Structured targeted Meta ad campaigns, high-converting offer creatives, and retargeting funnels driving inventory to sold-out status.
+                                        Sales of this high-ticket console had been slow. We ran Meta ads with offer-focused creatives and retargeting to turn that around.
                                     </p>
                                 </div>
                             </div>
@@ -523,7 +614,7 @@ export default function GrowthSprint() {
                                         })}
                                         className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
                                     >
-                                        <Eye size={14} /> View report
+                                        <Eye size={14} /> View report →
                                     </button>
                                     <button
                                         onClick={() => setShowCampaignBreakdown(!showCampaignBreakdown)}
@@ -533,14 +624,15 @@ export default function GrowthSprint() {
                                     </button>
                                 </div>
 
-                                {/* Expandable breakdown table */}
+                                {/* Expandable breakdown table with "Figures in US dollars" */}
                                 {showCampaignBreakdown && (
                                     <div className="border border-gray-200 overflow-hidden bg-surface mt-3">
-                                        <div className="bg-black text-white px-3 py-2 text-[10px] font-black uppercase tracking-wider">
-                                            Campaign Breakdown
+                                        <div className="bg-black text-white px-3 py-2 text-[10px] font-black uppercase tracking-wider flex justify-between items-center">
+                                            <span>Campaign Breakdown</span>
+                                            <span className="text-gray-400 font-normal">Figures in US dollars</span>
                                         </div>
-                                        <div className="overflow-x-auto -mx-1 sm:mx-0">
-                                            <table className="min-w-[340px] w-full text-left text-xs">
+                                        <div className="overflow-x-auto">
+                                            <table className="min-w-[320px] w-full text-left text-xs">
                                                 <thead className="border-b border-gray-200 bg-gray-50 font-bold uppercase text-[9px] text-gray-600">
                                                     <tr>
                                                         <th className="p-2">Segment</th>
@@ -575,244 +667,287 @@ export default function GrowthSprint() {
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <div className="p-2 bg-gray-100 border-t border-gray-200 flex flex-wrap gap-3 text-[10px] font-bold">
+                                            <button
+                                                onClick={() => setActiveProofModal({
+                                                    title: "Console Drop Batch A Ad Report",
+                                                    image: "/proof/ecommerce-15x-roas.png",
+                                                    metric: "13.82x ROAS | $4,300 Revenue",
+                                                    details: "Targeted console drop segment: 80 orders on $311 ad spend."
+                                                })}
+                                                className="text-primary hover:underline"
+                                            >
+                                                View Console Drop report →
+                                            </button>
+                                            <button
+                                                onClick={() => setActiveProofModal({
+                                                    title: "Targeted Retargeting Ad Report",
+                                                    image: "/proof/ps5-xbox-results.png",
+                                                    metric: "6.80x ROAS | $3,493 Revenue",
+                                                    details: "Retargeting segment: 58 orders on $513.73 ad spend."
+                                                })}
+                                                className="text-primary hover:underline"
+                                            >
+                                                View Retargeting report →
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        {/* 3. YEC PRECISION CAMPAIGN CARD */}
+                        {/* CARD 2: PAKAM (MOVED UP FROM CASE STUDIES) */}
                         <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
                             <div>
-                                <div className="flex flex-col gap-2 mb-6">
+                                <div className="flex flex-col gap-1.5 mb-6">
                                     <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-3 py-1">
-                                        Precision Lead Generation
+                                        CIRCULAR ECONOMY TECH
                                     </span>
                                     <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
-                                        YEC Leads Campaign
+                                        PAKAM
                                     </h3>
                                 </div>
 
-                                {/* Prominent Measurable Result */}
+                                {/* Measurable Result */}
                                 <div className="mb-6 p-4 sm:p-5 bg-surface border border-gray-200">
-                                    <span className="text-4xl sm:text-5xl font-black text-primary tracking-tighter block">
-                                        145%
+                                    <span className="text-4xl sm:text-5xl font-black text-black tracking-tighter block">
+                                        35,000+
                                     </span>
-                                    <span className="text-xs font-bold uppercase tracking-wider text-black block mt-1">
-                                        Goal Achievement
-                                    </span>
-                                    <span className="text-xs text-gray-500 font-medium block mt-1">
-                                        145 signups delivered (target: 100) at ₦73.14 CPL
+                                    <span className="text-xs font-bold uppercase tracking-wider text-primary block mt-1">
+                                        Users, up from 3,000
                                     </span>
                                 </div>
 
-                                {/* Marketing Work Lofty Brands Delivered */}
                                 <div className="mb-6">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-1">
-                                        Work Delivered
-                                    </span>
                                     <p className="text-base text-gray-700 leading-[1.6]">
-                                        Designed direct-response ad creative, managed audience targeting, and optimized daily ad delivery on Meta to surpass registration goals.
+                                        We grew Pakam's user base through educational content, video storytelling, podcast programming, and recycling challenges across 30+ schools. Led by our founder as Pakam's marketing manager, later as consultant.
                                     </p>
                                 </div>
+                            </div>
 
-                                {/* Fixed Progress Bar */}
-                                <div className="border border-gray-200 p-3 bg-surface mb-6">
-                                    <div className="flex justify-between items-center text-[10px] font-bold uppercase text-gray-600 mb-2">
-                                        <span>Target (100) vs Delivered</span>
-                                        <span className="text-primary font-black">+45% Over Goal</span>
-                                    </div>
-                                    <div className="relative w-full h-8 bg-white border border-black overflow-hidden flex items-center">
-                                        <div 
-                                            className="h-full bg-primary flex items-center justify-end px-3 text-[10px] font-black text-white whitespace-nowrap min-w-[120px]" 
-                                            style={{ width: '100%' }}
+                            <div className="pt-4 border-t border-gray-200">
+                                <Link
+                                    to="/work/pakam"
+                                    className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
+                                >
+                                    <Eye size={14} /> View Pakam case study →
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* CARD 3: TOSSE 2024 */}
+                        <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
+                            <div>
+                                <div className="flex flex-col gap-1.5 mb-6">
+                                    <span className="self-start text-[10px] font-black uppercase tracking-widest bg-primary text-white px-3 py-1">
+                                        EDUCATION EXHIBITION
+                                    </span>
+                                    <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
+                                        TOSSE 2024
+                                    </h3>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold text-gray-500 uppercase">
+                                            Total School Support Seminar/Exhibition
+                                        </span>
+                                        <a 
+                                            href="https://tosse.ng/" 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-0.5"
                                         >
-                                            145 DELIVERED
-                                        </div>
+                                            tosse.ng <ArrowUpRight size={12} />
+                                        </a>
                                     </div>
-                                    <div className="flex justify-between text-[9px] font-bold uppercase text-gray-500 mt-2 px-0.5">
-                                        <span>0 Leads</span>
-                                        <span>Target: 100</span>
-                                        <span className="text-primary font-black">145 Leads</span>
-                                    </div>
+                                </div>
+
+                                {/* Measurable Result */}
+                                <div className="mb-6 p-4 sm:p-5 bg-surface border border-gray-200">
+                                    <span className="text-4xl sm:text-5xl font-black text-black tracking-tighter block">
+                                        1,497
+                                    </span>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-primary block mt-1">
+                                        Event registrations
+                                    </span>
+                                    <span className="text-xs text-gray-500 font-medium block mt-1">
+                                        ₦40.80 each · 1,292 conversations
+                                    </span>
+                                </div>
+
+                                <div className="mb-6">
+                                    <p className="text-base text-gray-700 leading-[1.6]">
+                                        We ran the ads and social content that got 1,497 people to register for the event, at ₦40.80 each. The posts earned 1,100+ reactions, comments, and shares.
+                                    </p>
                                 </div>
                             </div>
 
                             <div className="pt-4 border-t border-gray-200">
                                 <button
                                     onClick={() => setActiveProofModal({
-                                        title: "YEC Leads Campaign Results Report",
-                                        image: "/proof/yec-leads-results.png",
-                                        metric: "145 Signups | ₦73.14 ($0.097) CPL",
-                                        details: "Goal: 100 Signups → Achieved: 145 Signups with 32,063 audience reach on ₦2,000 daily budget."
+                                        title: "TOSSE 2024 Backend Form Registrations Report",
+                                        image: "/proof/tosse-backend-registrations.png",
+                                        metric: "1,497 Total Registrations",
+                                        details: "Official backend report: 126 Exhibitor registration form entries + 1,371 Visitor registration form entries = 1,497 Total registrations."
                                     })}
                                     className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
                                 >
-                                    <Eye size={14} /> View report
+                                    <Eye size={14} /> View report →
                                 </button>
                             </div>
                         </div>
 
                     </div>
 
-                    {/* MORE WORK COLLAPSIBLE SECTION */}
+                    {/* SEE MORE RESULTS TOGGLE (COLLAPSED BY DEFAULT) */}
                     <div className="mt-12 text-center">
                         <button
-                            onClick={() => setShowMoreWork(!showMoreWork)}
+                            onClick={() => setShowMoreResults(!showMoreResults)}
                             className="w-full sm:w-auto px-8 py-3.5 min-h-[48px] bg-white border border-black text-xs font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all inline-flex items-center justify-center gap-2"
                         >
-                            {showMoreWork ? "Hide additional work" : "See more results"} 
-                            {showMoreWork ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            {showMoreResults ? "Hide more results" : "See more results"} 
+                            {showMoreResults ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </button>
                     </div>
 
-                    {showMoreWork && (
+                    {showMoreResults && (
                         <div className="mt-12 pt-12 border-t border-gray-200 space-y-16">
                             
-                            {/* TOSSE, PAKAM, MENO HAVEN CARDS */}
-                            <div>
-                                <h3 className="text-2xl font-black uppercase text-black tracking-tight mb-8">
-                                    More Client Case Studies
-                                </h3>
+                            {/* YEC & MENO HAVEN CARDS */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                                    {/* TOSSE CARD - Lead cost labeled per conversation, registrations with cost per reg */}
-                                    <div className="bg-white border border-gray-200 p-5 sm:p-6 flex flex-col justify-between">
-                                        <div>
-                                            <div className="flex flex-col gap-1 mb-4">
-                                                <span className="self-start text-[10px] font-black uppercase tracking-widest bg-primary text-white px-2.5 py-0.5">
-                                                    TOSSE 2024
-                                                </span>
-                                                <span className="text-xs font-bold text-gray-500 uppercase">
-                                                    Education Trade Exhibition
-                                                </span>
-                                            </div>
-                                            <h4 className="text-xl font-black uppercase text-black mb-3">TOSSE Exhibition</h4>
-                                            
-                                            <div className="space-y-3 mb-6 bg-surface p-4 border border-gray-200">
-                                                <div>
-                                                    <span className="text-[10px] font-bold uppercase text-gray-500 block">Registrations</span>
-                                                    <span className="text-2xl font-black text-black">1,497</span>
-                                                    <span className="text-xs font-bold text-primary block">₦40.80 per registration</span>
-                                                </div>
-                                                <div className="pt-2 border-t border-gray-200">
-                                                    <span className="text-[10px] font-bold uppercase text-gray-500 block">Direct Inquiries</span>
-                                                    <span className="text-lg font-black text-black">1,292 conversations</span>
-                                                    <span className="text-xs font-bold text-primary block">₦47.27 per conversation</span>
-                                                </div>
-                                            </div>
-
-                                            <p className="text-base text-gray-700 leading-[1.6] mb-6">
-                                                Executed omnichannel attendee acquisition generating 1,497 verified registrations backed by 1,100+ viral social reactions.
-                                            </p>
+                                {/* YEC CARD */}
+                                <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex flex-col gap-1.5 mb-6">
+                                            <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-3 py-1">
+                                                LEAD GENERATION
+                                            </span>
+                                            <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
+                                                YEC: YOUNG AND EXCELLENT CLUB
+                                            </h3>
                                         </div>
 
+                                        <div className="mb-6 p-4 sm:p-5 bg-surface border border-gray-200">
+                                            <span className="text-4xl sm:text-5xl font-black text-primary tracking-tighter block">
+                                                145 sign-ups
+                                            </span>
+                                            <span className="text-xs font-bold uppercase tracking-wider text-black block mt-1">
+                                                Target was 100
+                                            </span>
+                                            <span className="text-xs text-gray-500 font-medium block mt-1">
+                                                ₦73.14 per sign-up
+                                            </span>
+                                        </div>
+
+                                        <p className="text-base text-gray-700 leading-[1.6] mb-6">
+                                            We built the ads, picked the audience, and adjusted spend daily to beat the sign-up target.
+                                        </p>
+
+                                        {/* Progress bar without clipping or duplicate texts */}
+                                        <div className="border border-gray-200 p-3 bg-surface mb-6">
+                                            <div className="relative w-full h-7 bg-white border border-black overflow-hidden flex items-center">
+                                                <div 
+                                                    className="h-full bg-primary flex items-center justify-end px-3 text-[10px] font-black text-white whitespace-nowrap" 
+                                                    style={{ width: '100%' }}
+                                                >
+                                                    145 SIGN-UPS
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-between text-[10px] font-bold uppercase text-gray-600 mt-2 px-1">
+                                                <span>0</span>
+                                                <span>Target: 100</span>
+                                                <span className="text-primary font-black">145</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-gray-200">
                                         <button
                                             onClick={() => setActiveProofModal({
-                                                title: "TOSSE 2024 Backend Form Registrations Report",
-                                                image: "/proof/tosse-backend-registrations.png",
-                                                metric: "1,497 Total Registrations",
-                                                details: "Official backend report: 126 Exhibitor registration form entries + 1,371 Visitor registration form entries = 1,497 Total verified registrations."
+                                                title: "YEC Leads Campaign Results Report",
+                                                image: "/proof/yec-leads-results.png",
+                                                metric: "145 Sign-ups | ₦73.14 per sign-up",
+                                                details: "Target: 100 Sign-ups. Achieved: 145 Sign-ups with 32,063 reach on ₦2,000 daily budget."
                                             })}
-                                            className="min-h-[44px] py-2 text-xs font-bold uppercase text-primary hover:text-black inline-flex items-center gap-1 transition-colors"
+                                            className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
                                         >
-                                            <Eye size={14} /> View TOSSE report
+                                            <Eye size={14} /> View report →
                                         </button>
                                     </div>
+                                </div>
 
-                                    {/* PAKAM CARD */}
-                                    <div className="bg-white border border-gray-200 p-5 sm:p-6 flex flex-col justify-between">
-                                        <div>
-                                            <div className="flex flex-col gap-1 mb-4">
-                                                <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-2.5 py-0.5">
-                                                    Circular Economy Tech
-                                                </span>
-                                                <span className="text-xs font-bold text-primary uppercase">
-                                                    3,000 → 35,000+ Users
-                                                </span>
-                                            </div>
-                                            <h4 className="text-xl font-black uppercase text-black mb-3">Pakam</h4>
-                                            
-                                            <div className="mb-6 bg-surface p-4 border border-gray-200">
-                                                <span className="text-2xl font-black text-black block">35,000+</span>
-                                                <span className="text-xs font-bold text-gray-500 block mt-1">Platform Users Scaled</span>
-                                            </div>
-
-                                            <p className="text-base text-gray-700 leading-[1.6] mb-6">
-                                                Combined educational content strategy, video storytelling, podcast programming, and school recycling challenges across 30+ schools.
-                                            </p>
+                                {/* MENO HAVEN CARD */}
+                                <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex flex-col gap-1.5 mb-6">
+                                            <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-3 py-1">
+                                                HEALTH COMMUNITY
+                                            </span>
+                                            <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
+                                                MENO HAVEN
+                                            </h3>
                                         </div>
 
-                                        <Link
-                                            to="/work/pakam"
-                                            className="min-h-[44px] py-2 text-xs font-bold uppercase text-primary hover:text-black inline-flex items-center gap-1 transition-colors"
-                                        >
-                                            <Eye size={14} /> View Pakam case study →
-                                        </Link>
+                                        <div className="mb-6 p-4 sm:p-5 bg-surface border border-gray-200">
+                                            <span className="text-4xl sm:text-5xl font-black text-black tracking-tighter block">
+                                                700+
+                                            </span>
+                                            <span className="text-xs font-bold uppercase tracking-wider text-primary block mt-1">
+                                                Women members before launch
+                                            </span>
+                                        </div>
+
+                                        <p className="text-base text-gray-700 leading-[1.6] mb-6">
+                                            We built the community before launch through walkathons in multiple cities, webinars with medical experts, and social content.
+                                        </p>
                                     </div>
 
-                                    {/* MENO HAVEN CARD */}
-                                    <div className="bg-white border border-gray-200 p-5 sm:p-6 flex flex-col justify-between">
-                                        <div>
-                                            <div className="flex flex-col gap-1 mb-4">
-                                                <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-2.5 py-0.5">
-                                                    Health Community
-                                                </span>
-                                                <span className="text-xs font-bold text-primary uppercase">
-                                                    0 → 700+ Community
-                                                </span>
-                                            </div>
-                                            <h4 className="text-xl font-black uppercase text-black mb-3">Meno Haven</h4>
-                                            
-                                            <div className="mb-6 bg-surface p-4 border border-gray-200">
-                                                <span className="text-2xl font-black text-black block">700+</span>
-                                                <span className="text-xs font-bold text-gray-500 block mt-1">Active Women Members</span>
-                                            </div>
-
-                                            <p className="text-base text-gray-700 leading-[1.6] mb-6">
-                                                Built an engaged pre-launch community through multi-city physical walks, medical expert webinars, and high-trust social content.
-                                            </p>
-                                        </div>
-
+                                    <div className="pt-4 border-t border-gray-200">
                                         <Link
                                             to="/work/meno-haven"
-                                            className="min-h-[44px] py-2 text-xs font-bold uppercase text-primary hover:text-black inline-flex items-center gap-1 transition-colors"
+                                            className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
                                         >
                                             <Eye size={14} /> View Meno Haven case study →
                                         </Link>
                                     </div>
                                 </div>
+
                             </div>
 
-                            {/* CREATIVE CHANNELS & VIDEOS SHOWCASE */}
+                            {/* CREATIVE & VIDEO EXECUTION CARDS */}
                             <div>
                                 <h3 className="text-2xl font-black uppercase text-black tracking-tight mb-8">
-                                    Creative & Video Execution
+                                    Creative & video execution
                                 </h3>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                                     {/* Video Card 1: Pakam */}
                                     <div className="bg-white border border-gray-200 p-5 sm:p-6 flex flex-col justify-between">
                                         <div>
                                             <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
-                                                <span className="text-[10px] font-bold uppercase text-gray-500">TikTok Movement</span>
-                                                <a href="https://www.tiktok.com/@pakamnigeria_" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-primary flex items-center gap-1">
+                                                <span className="text-[10px] font-bold uppercase text-gray-500">TikTok</span>
+                                                <a 
+                                                    href="https://www.tiktok.com/@pakamnigeria_" 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    className="text-xs font-bold text-primary flex items-center gap-1"
+                                                >
                                                     @pakamnigeria_ <ArrowUpRight size={12} />
                                                 </a>
                                             </div>
                                             <div 
                                                 className="relative aspect-[9/16] bg-black border border-gray-200 overflow-hidden mb-4 cursor-pointer group"
                                                 onClick={() => setActiveVideoModal({
-                                                    title: "Pakam Viral Campaign Story 1",
-                                                    videoSrc: "/videos/pakam-viral-1.mp4",
+                                                    title: "Pakam Merchant Experience",
+                                                    videoSrc: "/videos/pakam-campaign-1.mp4",
                                                     poster: "/proof/pakam-tiktok-profile.png",
                                                     platform: "TikTok",
                                                     url: "https://www.tiktok.com/@pakamnigeria_",
-                                                    caption: "Short, engaging videos that brought 470,000+ views."
+                                                    caption: "Short videos that showed people how to turn waste into income."
                                                 })}
                                             >
                                                 <img 
                                                     src="/proof/pakam-tiktok-profile.png" 
-                                                    alt="Pakam" 
+                                                    alt="Pakam TikTok video preview" 
                                                     loading="lazy"
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
                                                 />
@@ -822,37 +957,36 @@ export default function GrowthSprint() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h5 className="font-bold text-base text-black mb-1">Pakam Viral Storytelling</h5>
-                                            <p className="text-sm sm:text-base text-gray-600 leading-[1.6] mb-4">
-                                                Short, engaging videos that turned everyday people into active app users.
+                                            <p className="text-base text-gray-700 leading-[1.6] mb-4">
+                                                Short videos that showed people how to turn waste into income. Our top video reached 473.7K views.
                                             </p>
                                         </div>
                                         <div className="space-y-3 pt-2 border-t border-gray-200">
                                             <button
                                                 onClick={() => setActiveVideoModal({
-                                                    title: "Pakam Viral Campaign Story 1",
-                                                    videoSrc: "/videos/pakam-viral-1.mp4",
+                                                    title: "How A Merchant Gets Paid",
+                                                    videoSrc: "/videos/pakam-campaign-1.mp4",
                                                     poster: "/proof/pakam-tiktok-profile.png",
                                                     platform: "TikTok",
                                                     url: "https://www.tiktok.com/@pakamnigeria_",
-                                                    caption: "Short, engaging videos that brought 470,000+ views."
+                                                    caption: "User experience video showing how waste turns into cash."
                                                 })}
-                                                className="w-full py-3 min-h-[48px] bg-primary text-white text-xs font-bold uppercase hover:bg-black transition-colors flex items-center justify-center"
+                                                className="w-full py-3 min-h-[48px] bg-primary text-white text-xs font-black uppercase tracking-wider hover:bg-black transition-colors flex items-center justify-center"
                                             >
-                                                Watch Video 1
+                                                WATCH: HOW A MERCHANT GETS PAID
                                             </button>
                                             <button
                                                 onClick={() => setActiveVideoModal({
-                                                    title: "Pakam Campaign Story 2",
-                                                    videoSrc: "/videos/pakam-viral-2.mp4",
+                                                    title: "Pakam Sign-Up Video",
+                                                    videoSrc: "/videos/pakam-campaign-2.mp4",
                                                     poster: "/proof/pakam-tiktok-profile.png",
                                                     platform: "TikTok",
                                                     url: "https://www.tiktok.com/@pakamnigeria_",
-                                                    caption: "Community recycling journey and viral app adoption."
+                                                    caption: "User acquisition video showing the app registration process."
                                                 })}
-                                                className="w-full py-3 min-h-[48px] bg-gray-100 text-black text-xs font-bold uppercase hover:bg-gray-200 transition-colors flex items-center justify-center"
+                                                className="w-full py-3 min-h-[48px] bg-gray-100 text-black text-xs font-black uppercase tracking-wider hover:bg-gray-200 transition-colors flex items-center justify-center"
                                             >
-                                                Watch Video 2
+                                                WATCH: PAKAM SIGN-UP VIDEO
                                             </button>
                                         </div>
                                     </div>
@@ -861,25 +995,30 @@ export default function GrowthSprint() {
                                     <div className="bg-white border border-gray-200 p-5 sm:p-6 flex flex-col justify-between">
                                         <div>
                                             <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
-                                                <span className="text-[10px] font-bold uppercase text-gray-500">Instagram Community</span>
-                                                <a href="https://www.instagram.com/menohavenng/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-primary flex items-center gap-1">
+                                                <span className="text-[10px] font-bold uppercase text-gray-500">Instagram</span>
+                                                <a 
+                                                    href="https://www.instagram.com/menohavenng/" 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    className="text-xs font-bold text-primary flex items-center gap-1"
+                                                >
                                                     @menohavenng <ArrowUpRight size={12} />
                                                 </a>
                                             </div>
                                             <div 
                                                 className="relative aspect-[9/16] bg-black border border-gray-200 overflow-hidden mb-4 cursor-pointer group"
                                                 onClick={() => setActiveVideoModal({
-                                                    title: "Meno Haven Community Walkathon Video",
+                                                    title: "Meno Haven Walkathon Highlights",
                                                     videoSrc: "/videos/menohaven-walkathon.mp4",
                                                     poster: "/proof/menohaven-instagram-feed.jpg",
                                                     platform: "Instagram",
                                                     url: "https://www.instagram.com/menohavenng/",
-                                                    caption: "Real walkathon video clips & participant reels driving 18,000+ views."
+                                                    caption: "Walkathon coverage and partnership content that kept the community engaged."
                                                 })}
                                             >
                                                 <img 
                                                     src="/proof/menohaven-instagram-feed.jpg" 
-                                                    alt="Meno Haven" 
+                                                    alt="Meno Haven Instagram video preview" 
                                                     loading="lazy"
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
                                                 />
@@ -889,104 +1028,36 @@ export default function GrowthSprint() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h5 className="font-bold text-base text-black mb-1">Meno Haven Walkathon</h5>
-                                            <p className="text-sm sm:text-base text-gray-600 leading-[1.6] mb-4">
-                                                Community event coverage and partnership content building high-trust engagement.
+                                            <p className="text-base text-gray-700 leading-[1.6] mb-4">
+                                                Walkathon coverage and partnership content that kept the community engaged.
                                             </p>
                                         </div>
                                         <div className="space-y-3 pt-2 border-t border-gray-200">
                                             <button
                                                 onClick={() => setActiveVideoModal({
-                                                    title: "Meno Haven Community Walkathon Video",
+                                                    title: "Walkathon Highlights",
                                                     videoSrc: "/videos/menohaven-walkathon.mp4",
                                                     poster: "/proof/menohaven-instagram-feed.jpg",
                                                     platform: "Instagram",
                                                     url: "https://www.instagram.com/menohavenng/",
-                                                    caption: "Real walkathon video clips & participant reels driving 18,000+ views."
+                                                    caption: "Event highlights building high-trust community engagement."
                                                 })}
-                                                className="w-full py-3 min-h-[48px] bg-primary text-white text-xs font-bold uppercase hover:bg-black transition-colors flex items-center justify-center"
+                                                className="w-full py-3 min-h-[48px] bg-primary text-white text-xs font-black uppercase tracking-wider hover:bg-black transition-colors flex items-center justify-center"
                                             >
-                                                Watch Walkathon Video
+                                                WATCH: WALKATHON HIGHLIGHTS
                                             </button>
                                             <button
                                                 onClick={() => setActiveVideoModal({
-                                                    title: "Meno Haven x Shea Radiance Partnership Reel",
+                                                    title: "Partnership Video",
                                                     videoSrc: "/videos/menohaven-shea-radiance.mp4",
                                                     poster: "/proof/menohaven-instagram-feed.jpg",
                                                     platform: "Instagram",
                                                     url: "https://www.instagram.com/menohavenng/",
-                                                    caption: "Glow Up Lagos brand partnership campaign showcasing natural skincare."
+                                                    caption: "Brand collaboration reel showcasing natural skincare."
                                                 })}
-                                                className="w-full py-3 min-h-[48px] bg-gray-100 text-black text-xs font-bold uppercase hover:bg-gray-200 transition-colors flex items-center justify-center"
+                                                className="w-full py-3 min-h-[48px] bg-gray-100 text-black text-xs font-black uppercase tracking-wider hover:bg-gray-200 transition-colors flex items-center justify-center"
                                             >
-                                                Watch Partnership Video
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Video Card 3: Craftsquarre Feed */}
-                                    <div className="bg-white border border-gray-200 p-5 sm:p-6 flex flex-col justify-between">
-                                        <div>
-                                            <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
-                                                <span className="text-[10px] font-bold uppercase text-gray-500">Instagram Reels</span>
-                                                <a href="https://www.instagram.com/craftsquarre/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-primary flex items-center gap-1">
-                                                    @craftsquarre <ArrowUpRight size={12} />
-                                                </a>
-                                            </div>
-                                            <div 
-                                                className="relative aspect-[9/16] bg-black border border-gray-200 overflow-hidden mb-4 cursor-pointer group"
-                                                onClick={() => setActiveVideoModal({
-                                                    title: "Craftsquarre Merchant Spotlight Reel",
-                                                    videoSrc: "/videos/craftsquarre-reel.mp4",
-                                                    poster: "/proof/craftsquarre-instagram-feed.png",
-                                                    platform: "Instagram",
-                                                    url: "https://www.instagram.com/craftsquarre/",
-                                                    caption: "High-energy videos showcasing real sellers and merchant milestones."
-                                                })}
-                                            >
-                                                <img 
-                                                    src="/proof/craftsquarre-instagram-feed.png" 
-                                                    alt="Craftsquarre" 
-                                                    loading="lazy"
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
-                                                />
-                                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                                    <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center">
-                                                        <Play size={18} className="fill-white translate-x-0.5" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 className="font-bold text-base text-black mb-1">Craftsquarre Merchant Reels</h5>
-                                            <p className="text-sm sm:text-base text-gray-600 leading-[1.6] mb-4">
-                                                Creator spotlights and product styling reels driving direct marketplace sales.
-                                            </p>
-                                        </div>
-                                        <div className="space-y-3 pt-2 border-t border-gray-200">
-                                            <button
-                                                onClick={() => setActiveVideoModal({
-                                                    title: "Craftsquarre Merchant Spotlight Reel",
-                                                    videoSrc: "/videos/craftsquarre-reel.mp4",
-                                                    poster: "/proof/craftsquarre-instagram-feed.png",
-                                                    platform: "Instagram",
-                                                    url: "https://www.instagram.com/craftsquarre/",
-                                                    caption: "High-energy videos showcasing real sellers."
-                                                })}
-                                                className="w-full py-3 min-h-[48px] bg-primary text-white text-xs font-bold uppercase hover:bg-black transition-colors flex items-center justify-center"
-                                            >
-                                                Watch Spotlight Reel
-                                            </button>
-                                            <button
-                                                onClick={() => setActiveVideoModal({
-                                                    title: "Craftsquarre Town Kilishi Showcase",
-                                                    videoSrc: "/videos/craftsquarre-reel2.mp4",
-                                                    poster: "/proof/craftsquarre-instagram-feed.png",
-                                                    platform: "Instagram",
-                                                    url: "https://www.instagram.com/craftsquarre/",
-                                                    caption: "Product demonstration driving customer purchases."
-                                                })}
-                                                className="w-full py-3 min-h-[48px] bg-gray-100 text-black text-xs font-bold uppercase hover:bg-gray-200 transition-colors flex items-center justify-center"
-                                            >
-                                                Watch Product Reel
+                                                WATCH: PARTNERSHIP VIDEO
                                             </button>
                                         </div>
                                     </div>
@@ -999,7 +1070,7 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* 4. IDEAL FIT & NOT THE RIGHT TIME IF */}
+            {/* 5. IDEAL FIT */}
             <section className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-white">
                 <div className="container mx-auto px-5 sm:px-6 max-w-5xl">
                     <div className="max-w-3xl mb-10 sm:mb-12">
@@ -1016,16 +1087,14 @@ export default function GrowthSprint() {
                         <div className="bg-white border border-gray-200 p-6 sm:p-8">
                             <h3 className="text-xl font-black uppercase text-black mb-6 flex items-center gap-2">
                                 <CheckCircle2 className="text-primary" size={22} />
-                                Who this is for
+                                WHO THIS IS FOR
                             </h3>
                             <div className="space-y-4">
                                 {[
-                                    "You already have a product or service to sell.",
-                                    "You need more structure around your marketing.",
-                                    "You have been doing the marketing yourself.",
-                                    "You have been posting without a clear strategy.",
-                                    "You need a team to take the marketing work off your plate.",
-                                    "You want strategy and execution working together."
+                                    "You have a product or service ready to sell",
+                                    "You have been doing your marketing yourself and want it off your plate",
+                                    "You have been posting without a clear strategy",
+                                    "You want strategy and execution from one team"
                                 ].map((point, index) => (
                                     <div key={index} className="flex items-start gap-3">
                                         <Check size={18} className="text-primary mt-1 shrink-0" strokeWidth={2.5} />
@@ -1041,13 +1110,14 @@ export default function GrowthSprint() {
                         <div className="bg-white border border-gray-200 p-6 sm:p-8">
                             <h3 className="text-xl font-black uppercase text-black mb-6 flex items-center gap-2">
                                 <XCircle className="text-gray-400" size={22} />
-                                Not the right time if
+                                NOT THE RIGHT TIME IF
                             </h3>
                             <div className="space-y-4">
                                 {[
                                     "You have no product or service to sell yet",
                                     "You are not ready to put money into ads",
-                                    "You want results with no input from you"
+                                    "You want results with no input from you",
+                                    "You want a guaranteed sales number"
                                 ].map((point, index) => (
                                     <div key={index} className="flex items-start gap-3">
                                         <X size={18} className="text-red-500 mt-1 shrink-0" strokeWidth={2.5} />
@@ -1062,11 +1132,13 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* 5. HOW IT WORKS */}
+            {/* 6. THREE STEPS */}
             <section className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-surface">
                 <div className="container mx-auto px-5 sm:px-6 max-w-5xl">
                     <div className="mb-12 sm:mb-16 border-b-2 border-black pb-8 max-w-3xl">
-                        <span className="text-primary font-black tracking-widest uppercase mb-2 block text-xs">Framework</span>
+                        <span className="text-primary font-black tracking-widest uppercase mb-2 block text-xs">
+                            FRAMEWORK
+                        </span>
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-black uppercase tracking-tight sm:tracking-tighter">
                             30 DAYS. THREE STEPS.
                         </h2>
@@ -1076,25 +1148,31 @@ export default function GrowthSprint() {
                         
                         <div className="bg-white border border-gray-200 p-6 sm:p-8">
                             <span className="text-3xl font-black text-primary block mb-3">01</span>
-                            <h3 className="text-xl font-black uppercase text-black mb-3">Week 1: We Set Up The Plan</h3>
+                            <h3 className="text-xl font-black uppercase text-black mb-3">
+                                WEEK 1: WE SET UP THE PLAN
+                            </h3>
                             <p className="text-base text-gray-700 leading-[1.6]">
-                                We learn about your products, check what has worked for you in the past, and prepare the exact posts and ads we will run for the month.
+                                We learn about your products, review what has worked for you before, and prepare the exact posts and ads for the month. You receive a simple shot list for your raw footage.
                             </p>
                         </div>
 
                         <div className="bg-white border border-gray-200 p-6 sm:p-8">
                             <span className="text-3xl font-black text-black block mb-3">02</span>
-                            <h3 className="text-xl font-black uppercase text-black mb-3">Weeks 2–4: We Create and Launch</h3>
+                            <h3 className="text-xl font-black uppercase text-black mb-3">
+                                WEEKS 2 TO 4: WE CREATE AND LAUNCH
+                            </h3>
                             <p className="text-base text-gray-700 leading-[1.6]">
-                                We produce the videos and graphics, write the copy, set up your ads, and launch everything. You just focus on serving your customers.
+                                We produce the videos and graphics, write the copy, set up your ads, and launch. Ads go live in Week 2. You approve drafts and keep serving your customers.
                             </p>
                         </div>
 
                         <div className="bg-white border border-gray-200 p-6 sm:p-8">
                             <span className="text-3xl font-black text-primary block mb-3">03</span>
-                            <h3 className="text-xl font-black uppercase text-black mb-3">Day 30: We Review Your Results</h3>
+                            <h3 className="text-xl font-black uppercase text-black mb-3">
+                                DAY 30: WE REVIEW YOUR RESULTS
+                            </h3>
                             <p className="text-base text-gray-700 leading-[1.6]">
-                                We sit down with you, show you how many sales, leads, and messages came in, and help you decide the best next move.
+                                We sit down with you, show you the leads, messages, and tracked sales that came in, and agree your best next move.
                             </p>
                         </div>
 
@@ -1102,11 +1180,11 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* 6. WHAT THE SPRINT INCLUDES (PRICE SECTION) */}
+            {/* 7. WHAT THE SPRINT INCLUDES */}
             <section id="pricing" className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-white">
                 <div className="container mx-auto px-5 sm:px-6 max-w-4xl">
                     <div className="border border-gray-200 p-6 sm:p-8 md:p-12 bg-surface">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-300">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-gray-300">
                             <div>
                                 <span className="text-xs font-black uppercase tracking-widest text-primary block mb-2">
                                     Complete 30-Day Solution
@@ -1120,19 +1198,26 @@ export default function GrowthSprint() {
                                     ₦199,000
                                 </span>
                                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block">
-                                    One-time · 30-day sprint
+                                    ONE-TIME · 30-DAY SPRINT
                                 </span>
                             </div>
                         </div>
 
+                        {/* Salary comparison line */}
+                        <p className="text-xs sm:text-sm text-gray-600 font-medium py-4 border-b border-gray-200 leading-normal">
+                            Hiring a social media manager, copywriter, video editor, and ads specialist in Lagos typically costs at least ₦150,000 each and at least ₦600,000 cumulatively a month in salaries alone.
+                        </p>
+
                         {/* Checklist */}
                         <div className="py-8 space-y-4">
                             {[
-                                "8 strategic feed posts: 3 high-converting videos, 3 educational carousels, and 2 offer spotlights",
-                                "Complete profile optimization",
-                                "Meta ad campaign with 3 to 4 tested ad creatives, set up and managed on Instagram and Facebook. Retargeting added for larger budgets.",
-                                "Weekly performance report showing spend, leads, and sales metrics",
-                                "Dedicated WhatsApp workspace for fast approvals, plus a 30-day performance review deck"
+                                "8 content pieces: 3 short-form videos, 3 educational carousels, and 2 offer-focused posts",
+                                "Profile optimisation so your page is ready to convert",
+                                "Meta ads managed end to end: setup, 3 to 4 tested creatives, and ongoing optimisation. Retargeting added for larger budgets.",
+                                "Weekly reports on spend, leads, and tracked sales",
+                                "30-day performance review with insights and recommended next steps",
+                                "WhatsApp group for feedback and fast approvals",
+                                "You keep every asset we create"
                             ].map((feature, i) => (
                                 <div key={i} className="flex items-start gap-3">
                                     <CheckCircle2 size={20} className="text-primary mt-1 shrink-0" strokeWidth={2.5} />
@@ -1144,36 +1229,41 @@ export default function GrowthSprint() {
                         </div>
 
                         {/* Revisions & Footage Line */}
-                        <p className="text-base font-medium text-gray-700 leading-[1.6] mb-8">
+                        <p className="text-base font-medium text-gray-700 leading-[1.6] mb-6">
                             Includes 2 rounds of revisions per piece. You provide raw footage and photos, and we edit and design.
                         </p>
 
                         {/* Ad spend note */}
-                        <div className="p-4 bg-white border border-gray-300 mb-8">
+                        <div className="p-4 bg-white border border-gray-300 mb-4">
                             <p className="text-base font-bold text-black leading-[1.6]">
-                                Ad spend is separate. Most clients start with ₦50,000 – ₦150,000.
+                                Ad spend is separate. Most clients start with ₦50,000 to ₦150,000.
+                            </p>
+                        </div>
+
+                        {/* Delivery guarantee card */}
+                        <div className="p-4 bg-white border-2 border-black mb-8">
+                            <p className="text-base font-medium text-black leading-[1.6]">
+                                <span className="font-bold">Delivery guarantee:</span> if we miss the delivery schedule we agree in Week 1, your sprint extends at no extra cost until all 8 content pieces and your ad setup are live.
                             </p>
                         </div>
 
                         {/* CTA button */}
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                            <div className="w-full sm:w-auto">
-                                <button 
-                                    onClick={scrollToForm}
-                                    className="w-full sm:w-auto px-8 py-4 min-h-[48px] bg-primary text-white font-black text-sm uppercase tracking-widest hover:bg-black transition-all flex items-center justify-center gap-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
-                                >
-                                    Book your sprint <ArrowRight size={16} />
-                                </button>
-                                <span className="block text-xs text-gray-500 font-medium mt-2">
-                                    Fill a 2-minute form. We reply within 24 hours.
-                                </span>
-                            </div>
+                        <div>
+                            <button 
+                                onClick={scrollToForm}
+                                className="w-full sm:w-auto px-8 py-4 min-h-[48px] bg-primary text-white font-black text-sm uppercase tracking-widest hover:bg-black transition-all flex items-center justify-center gap-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                            >
+                                Book your sprint →
+                            </button>
+                            <span className="block text-xs text-gray-500 font-medium mt-3">
+                                Takes 2 minutes. We reply within 24 hours.
+                            </span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* 7. TIME COMMITMENT */}
+            {/* 8. TIME NEEDED */}
             <section className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-surface">
                 <div className="container mx-auto px-5 sm:px-6 max-w-4xl">
                     <span className="inline-block py-2 px-4 border border-gray-200 font-bold uppercase tracking-widest text-xs mb-6 bg-white">
@@ -1183,18 +1273,18 @@ export default function GrowthSprint() {
                         YOUR TIME NEEDED: ABOUT 2-3 HOURS A WEEK.
                     </h2>
                     <p className="text-base sm:text-lg text-gray-700 max-w-2xl mb-8 border-l-4 border-primary pl-4 leading-[1.6]">
-                        You stay involved where it matters. We handle the rest. All we need from you is:
+                        You stay involved where it matters. We handle the rest. All we need from you:
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
                             "Basic details about your products or services",
-                            "Your logos, photos, or existing videos",
-                            "Access to your social media and ad account",
-                            "Quick feedback when we send you drafts for approval"
+                            "Your logos, raw footage, and photos",
+                            "Partner access to your social and ad accounts. We never ask for your passwords.",
+                            "Quick feedback when we send drafts for approval"
                         ].map((item, idx) => (
-                            <div key={idx} className="bg-white border border-gray-200 p-4 sm:p-5 flex items-center gap-3">
-                                <span className="w-2.5 h-2.5 bg-primary rounded-full shrink-0" />
+                            <div key={idx} className="bg-white border border-gray-200 p-4 sm:p-5 flex items-start gap-3">
+                                <span className="w-2.5 h-2.5 bg-primary rounded-full shrink-0 mt-2" />
                                 <span className="text-base font-medium text-black leading-[1.6]">{item}</span>
                             </div>
                         ))}
@@ -1202,11 +1292,11 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* 8. FAQ */}
-            <section id="faq" className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-surface">
+            {/* 9. FAQ */}
+            <section id="faq" className="py-12 sm:py-16 md:py-24 border-b-2 border-black bg-white">
                 <div className="container mx-auto px-5 sm:px-6 max-w-4xl">
                     <div className="text-center mb-12 sm:mb-16">
-                        <span className="inline-block py-2 px-4 border border-gray-200 font-bold uppercase tracking-widest text-xs mb-6 bg-white">
+                        <span className="inline-block py-2 px-4 border border-gray-200 font-bold uppercase tracking-widest text-xs mb-6 bg-surface">
                             Answers
                         </span>
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-black uppercase tracking-tight sm:tracking-tighter break-words">
@@ -1245,65 +1335,108 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* 9. FINAL CTA BLOCK */}
+            {/* 10. FINAL CTA AND FORM */}
             <section id="get-started" className="py-12 sm:py-16 md:py-24 bg-primary text-white relative scroll-mt-20">
                 <div className="container mx-auto px-5 sm:px-6 max-w-3xl">
                     
                     <div className="text-center mb-10">
                         <div className="inline-block py-2 px-4 bg-black text-white text-xs font-black uppercase tracking-widest mb-4">
-                            30-Day Growth Sprint • ₦199,000
+                            30-DAY GROWTH SPRINT · ₦199,000
                         </div>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight sm:tracking-tighter leading-[1.05] sm:leading-[0.95] mb-4">
                             Ready for marketing that brings customers?
                         </h2>
                         <p className="text-base sm:text-lg text-black font-medium max-w-lg mx-auto">
-                            Fill out your details below. We vet your business and get in touch within 24 hours.
+                            Fill out your details below. We review your business and reply within 24 hours.
                         </p>
                     </div>
 
-                    {/* 3-STEP MICRO-TIMELINE */}
+                    {/* 3-STEP TILES */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
                         <div className="bg-black text-white border-2 border-black p-3.5 text-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                             <span className="text-[10px] font-black uppercase text-primary block">Step 01</span>
-                            <span className="text-xs font-black uppercase text-white block">01. REVIEW</span>
-                            <span className="text-[10px] text-gray-300 font-bold block">(24h Brand Audit)</span>
+                            <span className="text-xs font-black uppercase text-white block">01 REVIEW</span>
+                            <span className="text-[10px] text-gray-300 font-bold block">(we reply within 24 hours)</span>
                         </div>
                         <div className="bg-black text-white border-2 border-black p-3.5 text-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                             <span className="text-[10px] font-black uppercase text-primary block">Step 02</span>
-                            <span className="text-xs font-black uppercase text-white block">02. CONNECT</span>
-                            <span className="text-[10px] text-gray-300 font-bold block">(15-Min Alignment via WhatsApp)</span>
+                            <span className="text-xs font-black uppercase text-white block">02 CONNECT</span>
+                            <span className="text-[10px] text-gray-300 font-bold block">(free 15-minute fit chat on WhatsApp)</span>
                         </div>
                         <div className="bg-black text-white border-2 border-black p-3.5 text-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                             <span className="text-[10px] font-black uppercase text-primary block">Step 03</span>
-                            <span className="text-xs font-black uppercase text-white block">03. KICKOFF</span>
-                            <span className="text-[10px] text-gray-300 font-bold block">(Week 1 Production)</span>
+                            <span className="text-xs font-black uppercase text-white block">03 KICKOFF</span>
+                            <span className="text-[10px] text-gray-300 font-bold block">(Week 1 planning)</span>
                         </div>
                     </div>
 
                     <div className="bg-white border-2 border-black p-5 sm:p-8 md:p-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] text-black">
                         {submitted ? (
-                            <div className="text-center py-12 space-y-4">
+                            <div className="text-center py-12 space-y-6">
                                 <div className="w-16 h-16 bg-primary text-white flex items-center justify-center mx-auto mb-4 border-2 border-black">
                                     <ShieldCheck size={32} />
                                 </div>
-                                <h3 className="text-2xl sm:text-3xl font-black uppercase text-black">Application Received!</h3>
-                                <p className="text-base text-gray-700 max-w-md mx-auto leading-[1.6]">
-                                    Thank you! Your details have been submitted. We are reviewing your brand and will reach out via WhatsApp or email within 24 hours.
+                                <h3 className="text-2xl sm:text-3xl font-black uppercase text-black">
+                                    Application Received!
+                                </h3>
+                                <p className="text-base sm:text-lg text-gray-700 max-w-md mx-auto leading-[1.6]">
+                                    Thanks, {userFirstName}. We have your details and will reply within 24 hours on WhatsApp or email.
                                 </p>
-                                <button
-                                    onClick={() => setSubmitted(false)}
-                                    className="mt-6 px-8 py-4 min-h-[48px] bg-black text-white text-xs font-black uppercase tracking-widest hover:bg-primary transition-colors"
-                                >
-                                    Submit Another Application
-                                </button>
+                                <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    <a
+                                        href={WHATSAPP_PREFILLED_URL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={handleWhatsAppClick}
+                                        className="w-full sm:w-auto px-6 py-4 min-h-[48px] bg-green-600 text-white text-xs font-black uppercase tracking-widest hover:bg-black transition-colors flex items-center justify-center gap-2 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                                    >
+                                        Chat with us on WhatsApp
+                                    </a>
+                                    <button
+                                        onClick={() => {
+                                            setSubmitted(false);
+                                            setFormData({
+                                                name: '',
+                                                businessName: '',
+                                                email: '',
+                                                phone: '',
+                                                businessCategory: '',
+                                                marketingGoal: '',
+                                                adBudget: ''
+                                            });
+                                        }}
+                                        className="w-full sm:w-auto px-6 py-4 min-h-[48px] bg-black text-white text-xs font-black uppercase tracking-widest hover:bg-primary transition-colors flex items-center justify-center"
+                                    >
+                                        Submit another response
+                                    </button>
+                                </div>
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
                                 
+                                {/* Honeypot spam prevention (hidden from real users) */}
+                                <input 
+                                    type="text" 
+                                    name="_gotcha" 
+                                    tabIndex={-1} 
+                                    autoComplete="off"
+                                    value={honeypot} 
+                                    onChange={(e) => setHoneypot(e.target.value)}
+                                    style={{ display: 'none' }}
+                                    aria-hidden="true"
+                                />
+
+                                {submitError && (
+                                    <div className="p-4 bg-red-50 border-2 border-red-500 text-red-700 text-sm font-bold flex items-start gap-2">
+                                        <XCircle size={18} className="shrink-0 mt-0.5" />
+                                        <span>{submitError}</span>
+                                    </div>
+                                )}
+
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                                     <div>
                                         <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
-                                            Your Name
+                                            Your Name <span className="text-primary">*</span>
                                         </label>
                                         <input 
                                             type="text" 
@@ -1319,7 +1452,7 @@ export default function GrowthSprint() {
 
                                     <div>
                                         <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
-                                            Business Name
+                                            Business Name <span className="text-primary">*</span>
                                         </label>
                                         <input 
                                             type="text" 
@@ -1337,7 +1470,7 @@ export default function GrowthSprint() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                                     <div>
                                         <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
-                                            Work Email
+                                            Email <span className="text-primary">*</span>
                                         </label>
                                         <input 
                                             type="email" 
@@ -1354,7 +1487,7 @@ export default function GrowthSprint() {
 
                                     <div>
                                         <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
-                                            WhatsApp / Phone
+                                            WhatsApp / Phone <span className="text-primary">*</span>
                                         </label>
                                         <input 
                                             type="tel" 
@@ -1370,28 +1503,51 @@ export default function GrowthSprint() {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
-                                        Business Category
-                                    </label>
-                                    <select
-                                        name="businessCategory"
-                                        value={formData.businessCategory}
-                                        onChange={handleInputChange}
-                                        className="w-full min-h-[48px] bg-gray-50 border border-gray-300 p-3.5 sm:p-4 text-black font-medium focus:outline-none focus:border-black transition-colors text-base"
-                                    >
-                                        <option value="E-Commerce / Retail">E-Commerce / Retail</option>
-                                        <option value="Services / B2B">Services / B2B</option>
-                                        <option value="Health / Wellness & Beauty">Health / Wellness & Beauty</option>
-                                        <option value="Tech / Mobile App">Tech / Mobile App</option>
-                                        <option value="Education & Events">Education & Events</option>
-                                        <option value="Other">Other</option>
-                                    </select>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                                    <div>
+                                        <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
+                                            Business Category <span className="text-primary">*</span>
+                                        </label>
+                                        <select
+                                            name="businessCategory"
+                                            required
+                                            value={formData.businessCategory}
+                                            onChange={handleInputChange}
+                                            className="w-full min-h-[48px] bg-gray-50 border border-gray-300 p-3.5 sm:p-4 text-black font-medium focus:outline-none focus:border-black transition-colors text-base"
+                                        >
+                                            <option value="" disabled>Select category</option>
+                                            <option value="E-Commerce / Retail">E-Commerce / Retail</option>
+                                            <option value="Services / B2B">Services / B2B</option>
+                                            <option value="Health / Wellness & Beauty">Health / Wellness & Beauty</option>
+                                            <option value="Tech / Mobile App">Tech / Mobile App</option>
+                                            <option value="Education & Events">Education & Events</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
+                                            Ad Budget <span className="text-primary">*</span>
+                                        </label>
+                                        <select
+                                            name="adBudget"
+                                            required
+                                            value={formData.adBudget}
+                                            onChange={handleInputChange}
+                                            className="w-full min-h-[48px] bg-gray-50 border border-gray-300 p-3.5 sm:p-4 text-black font-medium focus:outline-none focus:border-black transition-colors text-base"
+                                        >
+                                            <option value="" disabled>Select ad budget</option>
+                                            <option value="₦50,000 to ₦100,000">₦50,000 to ₦100,000</option>
+                                            <option value="₦100,000 to ₦150,000">₦100,000 to ₦150,000</option>
+                                            <option value="Above ₦150,000">Above ₦150,000</option>
+                                            <option value="Not sure yet">Not sure yet</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-xs font-black uppercase tracking-widest text-black mb-2">
-                                        Primary Goal For This Month
+                                        Primary Goal For This Month <span className="text-primary">*</span>
                                     </label>
                                     <input 
                                         type="text" 
@@ -1408,19 +1564,31 @@ export default function GrowthSprint() {
                                     <button 
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="w-full min-h-[52px] py-4 bg-black text-white font-black text-base md:text-lg uppercase tracking-widest hover:bg-primary transition-all flex items-center justify-center gap-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(255,94,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                                        className="w-full min-h-[52px] py-4 bg-black text-white font-black text-base md:text-lg uppercase tracking-widest hover:bg-primary transition-all flex items-center justify-center gap-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(255,94,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
                                         {isSubmitting ? "PROCESSING..." : "Book your sprint →"}
                                     </button>
                                     <span className="block text-center text-xs text-gray-500 font-medium mt-3">
-                                        Fill a 2-minute form. We reply within 24 hours.
+                                        Takes 2 minutes. We reply within 24 hours.
                                     </span>
                                 </div>
 
                                 <div className="text-center pt-2">
-                                    <p className="text-xs text-gray-500">
-                                        🔒 Zero spam. We vet your brand and reach out via WhatsApp/Email within 24 hours.
+                                    <p className="text-xs text-gray-500 font-medium">
+                                        We never share your details.
                                     </p>
+                                </div>
+
+                                <div className="pt-4 border-t border-gray-200 text-center">
+                                    <a
+                                        href={WHATSAPP_PREFILLED_URL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={handleWhatsAppClick}
+                                        className="w-full min-h-[48px] py-3 px-4 bg-gray-100 hover:bg-gray-200 text-black text-xs font-black uppercase tracking-wider transition-colors inline-flex items-center justify-center gap-2 border border-gray-300"
+                                    >
+                                        Prefer WhatsApp? Chat with us
+                                    </a>
                                 </div>
 
                             </form>
@@ -1429,16 +1597,20 @@ export default function GrowthSprint() {
                 </div>
             </section>
 
-            {/* STICKY BOTTOM BAR (MOBILE ONLY - NEVER COVERS HERO ON FIRST LOAD) */}
+            {/* STICKY BOTTOM BAR (MOBILE ONLY) */}
             {showSticky && (
                 <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-black p-3 px-4 sm:px-6 flex items-center justify-between shadow-lg">
                     <div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-primary block leading-none mb-0.5">30-Day Sprint</span>
-                        <span className="text-sm sm:text-base font-black text-black leading-tight block">₦199,000</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary block leading-none mb-0.5">
+                            30-day sprint
+                        </span>
+                        <span className="text-sm sm:text-base font-black text-black leading-tight block">
+                            ₦199,000 · 30-day sprint
+                        </span>
                     </div>
                     <button
                         onClick={scrollToForm}
-                        className="px-4 sm:px-5 py-2.5 min-h-[44px] bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-black transition-colors border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0 flex items-center justify-center"
+                        className="px-4 sm:px-5 py-2.5 min-h-[48px] bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-black transition-colors border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0 flex items-center justify-center"
                     >
                         Book your sprint
                     </button>
@@ -1446,7 +1618,7 @@ export default function GrowthSprint() {
             )}
 
             {/* MINIMAL FOOTER */}
-            <footer className="py-12 sm:py-16 pb-24 sm:pb-28 md:pb-16 bg-black text-white border-t border-gray-900">
+            <footer className="py-12 sm:py-16 pb-28 sm:pb-32 md:pb-16 bg-black text-white border-t border-gray-900">
                 <div className="container mx-auto px-5 sm:px-6 max-w-6xl">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-10 pb-10 border-b border-gray-800">
                         <div>
@@ -1459,21 +1631,49 @@ export default function GrowthSprint() {
                                 />
                             </Link>
                             <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
-                                Product Marketing • Growth Strategy • Campaigns
+                                Product Marketing · Growth Strategy · Campaigns
                             </p>
                         </div>
 
                         <div className="flex flex-wrap items-center gap-6 text-xs font-bold uppercase tracking-wider">
                             <Link to="/" className="hover:text-primary transition-colors">Website</Link>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Instagram</a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">LinkedIn</a>
-                            <a href="mailto:Loftybrands@gmail.com" className="text-primary hover:text-white transition-colors">Loftybrands@gmail.com</a>
+                            <a 
+                                href="https://www.instagram.com/loftybrandsng/" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="hover:text-primary transition-colors"
+                            >
+                                Instagram
+                            </a>
+                            <a 
+                                href="https://www.linkedin.com/company/lofty-brands/" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="hover:text-primary transition-colors"
+                            >
+                                LinkedIn
+                            </a>
+                            <a 
+                                href={WHATSAPP_PREFILLED_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={handleWhatsAppClick}
+                                className="hover:text-primary transition-colors"
+                            >
+                                WhatsApp
+                            </a>
+                            <a 
+                                href="mailto:loftybrands@gmail.com" 
+                                className="text-primary hover:text-white transition-colors"
+                            >
+                                loftybrands@gmail.com
+                            </a>
                         </div>
                     </div>
 
                     <div className="flex flex-col sm:flex-row justify-between items-center text-xs font-bold uppercase tracking-widest text-gray-500 gap-4">
                         <span>&copy; {new Date().getFullYear()} Lofty Brands. All rights reserved.</span>
-                        <span>30-Day Growth Sprint Dedicated Offer</span>
+                        <span>30-Day Growth Sprint</span>
                     </div>
                 </div>
             </footer>
@@ -1491,7 +1691,7 @@ export default function GrowthSprint() {
                         <div className="flex items-center justify-between pb-3 sm:pb-4 mb-4 border-b-2 border-black">
                             <div>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-primary block">
-                                    Verified Campaign Dashboard
+                                    Campaign Report
                                 </span>
                                 <h3 className="text-base sm:text-2xl font-black uppercase text-black tracking-tight">
                                     {activeProofModal.title}
@@ -1539,7 +1739,7 @@ export default function GrowthSprint() {
                                     onClick={() => setActiveProofModal(null)}
                                     className="px-4 sm:px-5 py-2.5 min-h-[44px] bg-black text-white text-xs font-black uppercase tracking-widest hover:bg-primary transition-colors shrink-0 flex items-center justify-center"
                                 >
-                                    Close Evidence
+                                    Close
                                 </button>
                             </div>
                         </div>
