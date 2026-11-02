@@ -392,7 +392,7 @@ export default function GrowthSprint() {
 
                                 <div className="mb-6">
                                     <span className="text-[10px] font-black uppercase tracking-widest text-primary block mb-1">
-                                        Best result: PS5 sales campaign
+                                        Best result: Tech Month sales campaign
                                     </span>
                                     <div className="flex items-baseline gap-2">
                                         <span className="text-4xl sm:text-5xl font-black text-white tracking-tighter">
@@ -402,6 +402,9 @@ export default function GrowthSprint() {
                                     <p className="text-sm font-bold text-gray-300 mt-1">
                                         Every $1 spent on ads brought back $9.45 in sales
                                     </p>
+                                    <span className="text-[11px] font-medium text-gray-400 block mt-0.5">
+                                        Two campaigns combined
+                                    </span>
                                 </div>
 
                                 {/* Two small boxes */}
@@ -568,18 +571,18 @@ export default function GrowthSprint() {
                     {/* MAIN 3 CARDS: PS5, PAKAM, TOSSE */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                         
-                        {/* CARD 1: PS5 SALES CAMPAIGN */}
+                        {/* CARD 1: TECH MONTH SALES CAMPAIGN */}
                         <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
                             <div>
                                 <div className="flex flex-col gap-1.5 mb-6">
                                     <span className="self-start text-[10px] font-black uppercase tracking-widest bg-black text-white px-3 py-1">
-                                        HIGH-TICKET ECOMMERCE
+                                        ECOMMERCE
                                     </span>
                                     <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
-                                        PS5 SALES CAMPAIGN
+                                        TECH MONTH SALES CAMPAIGN
                                     </h3>
                                     <span className="text-xs font-bold text-gray-500 uppercase">
-                                        Overseas online store
+                                        Overseas e-commerce brand
                                     </span>
                                 </div>
 
@@ -591,14 +594,14 @@ export default function GrowthSprint() {
                                     <span className="text-xs font-bold uppercase tracking-wider text-black block mt-1">
                                         Return on ad spend (ROAS)
                                     </span>
-                                    <span className="text-xs text-gray-500 font-medium block mt-1">
-                                        $7,793 in sales from $824.73 ad spend
+                                    <span className="text-xs text-gray-600 font-medium block mt-1">
+                                        Two campaigns combined: $7,793 in sales from $824.73 ad spend
                                     </span>
                                 </div>
 
                                 <div className="mb-6">
                                     <p className="text-base text-gray-700 leading-[1.6]">
-                                        Sales of this high-ticket console had been slow. We ran Meta ads with offer-focused creatives and retargeting to turn that around.
+                                        During Tech Month, we ran two Meta ad campaigns for an e-commerce brand: one across different tech items (80 orders) and one for the PS5 (58 orders).
                                     </p>
                                 </div>
                             </div>
@@ -607,10 +610,10 @@ export default function GrowthSprint() {
                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                     <button
                                         onClick={() => setActiveProofModal({
-                                            title: "High-Ticket E-commerce Campaign Dashboard",
+                                            title: "Tech Month & PS5 Campaigns Dashboard",
                                             image: "/proof/ecommerce-15x-roas.png",
                                             metric: "9.45x Overall ROAS | $7,793.00 Combined Revenue",
-                                            details: "138 total purchases generated across targeted console drops and retargeting campaigns."
+                                            details: "138 total purchases generated across Tech Month ($4,300.00) and PS5 sales ($3,493.00) campaigns."
                                         })}
                                         className="min-h-[44px] py-2 text-xs font-black uppercase tracking-wider text-primary hover:text-black inline-flex items-center gap-1.5 transition-colors"
                                     >
@@ -624,18 +627,68 @@ export default function GrowthSprint() {
                                     </button>
                                 </div>
 
-                                {/* Expandable breakdown table with "Figures in US dollars" */}
+                                {/* Expandable breakdown panel with "Figures in US dollars" */}
                                 {showCampaignBreakdown && (
                                     <div className="border border-gray-200 overflow-hidden bg-surface mt-3">
                                         <div className="bg-black text-white px-3 py-2 text-[10px] font-black uppercase tracking-wider flex justify-between items-center">
                                             <span>Campaign Breakdown</span>
                                             <span className="text-gray-400 font-normal">Figures in US dollars</span>
                                         </div>
-                                        <div className="overflow-x-auto">
-                                            <table className="min-w-[320px] w-full text-left text-xs">
+
+                                        {/* Mobile Stacked View (< 480px) to prevent table clipping & overlap */}
+                                        <div className="block sm:hidden p-2.5 space-y-2.5 bg-white">
+                                            <div className="p-3 bg-gray-50 border border-gray-200 text-xs">
+                                                <span className="font-bold text-black block mb-2 leading-snug">
+                                                    Tech Month campaign (various tech items)
+                                                </span>
+                                                <div className="grid grid-cols-2 gap-2 text-[11px] text-gray-600">
+                                                    <div>Spend: <span className="font-bold text-black">$311.00</span></div>
+                                                    <div>Orders: <span className="font-bold text-black">80</span></div>
+                                                    <div>Revenue: <span className="font-bold text-black">$4,300.00</span></div>
+                                                    <div>ROAS: <span className="font-black text-primary">13.8x</span></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="p-3 bg-gray-50 border border-gray-200 text-xs">
+                                                <span className="font-bold text-black block mb-2 leading-snug">
+                                                    PS5 sales campaign
+                                                </span>
+                                                <div className="grid grid-cols-2 gap-2 text-[11px] text-gray-600">
+                                                    <div>Spend: <span className="font-bold text-black">$513.73</span></div>
+                                                    <div>Orders: <span className="font-bold text-black">58</span></div>
+                                                    <div>Revenue: <span className="font-bold text-black">$3,493.00</span></div>
+                                                    <div>ROAS: <span className="font-black text-black">6.8x</span></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="p-3 bg-black text-white border border-black text-xs">
+                                                <div className="flex justify-between items-center mb-2 pb-1 border-b border-gray-800">
+                                                    <span className="font-black uppercase tracking-wider text-xs">Combined</span>
+                                                    <span className="font-black text-primary text-sm">9.45x ROAS</span>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-1 text-[11px]">
+                                                    <div>
+                                                        <span className="text-gray-400 block text-[9px] uppercase">Spend</span>
+                                                        <span className="text-gray-200 font-bold">$824.73</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="text-gray-400 block text-[9px] uppercase">Orders</span>
+                                                        <span className="text-gray-200 font-bold">138</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="text-gray-400 block text-[9px] uppercase">Revenue</span>
+                                                        <span className="text-primary font-black">$7,793.00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Desktop / Tablet Table View (>= 480px) */}
+                                        <div className="hidden sm:block overflow-x-auto">
+                                            <table className="w-full text-left text-xs bg-white">
                                                 <thead className="border-b border-gray-200 bg-gray-50 font-bold uppercase text-[9px] text-gray-600">
                                                     <tr>
-                                                        <th className="p-2">Segment</th>
+                                                        <th className="p-2">Campaign</th>
                                                         <th className="p-2">Spend</th>
                                                         <th className="p-2">Orders</th>
                                                         <th className="p-2">Revenue</th>
@@ -644,21 +697,21 @@ export default function GrowthSprint() {
                                                 </thead>
                                                 <tbody className="divide-y divide-gray-200 font-medium">
                                                     <tr className="bg-white">
-                                                        <td className="p-2 font-bold text-black">Console Drop Batch A</td>
+                                                        <td className="p-2 font-bold text-black">Tech Month campaign (various tech items)</td>
                                                         <td className="p-2 text-gray-600">$311.00</td>
                                                         <td className="p-2 text-gray-600">80</td>
                                                         <td className="p-2 font-bold text-black">$4,300.00</td>
-                                                        <td className="p-2 text-right font-bold text-primary">13.82x</td>
+                                                        <td className="p-2 text-right font-bold text-primary">13.8x</td>
                                                     </tr>
                                                     <tr className="bg-surface">
-                                                        <td className="p-2 font-bold text-black">Targeted Retargeting</td>
+                                                        <td className="p-2 font-bold text-black">PS5 sales campaign</td>
                                                         <td className="p-2 text-gray-600">$513.73</td>
                                                         <td className="p-2 text-gray-600">58</td>
                                                         <td className="p-2 font-bold text-black">$3,493.00</td>
-                                                        <td className="p-2 text-right font-bold text-black">6.80x</td>
+                                                        <td className="p-2 text-right font-bold text-black">6.8x</td>
                                                     </tr>
                                                     <tr className="bg-black text-white font-bold text-[11px]">
-                                                        <td className="p-2 uppercase">Combined Revenue</td>
+                                                        <td className="p-2 uppercase">Combined</td>
                                                         <td className="p-2 text-gray-300">$824.73</td>
                                                         <td className="p-2 text-gray-300">138</td>
                                                         <td className="p-2 text-primary">$7,793.00</td>
@@ -667,28 +720,30 @@ export default function GrowthSprint() {
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div className="p-2 bg-gray-100 border-t border-gray-200 flex flex-wrap gap-3 text-[10px] font-bold">
+
+                                        {/* Report links */}
+                                        <div className="p-2.5 bg-gray-100 border-t border-gray-200 flex flex-wrap items-center gap-4 text-[11px] font-bold">
                                             <button
                                                 onClick={() => setActiveProofModal({
-                                                    title: "Console Drop Batch A Ad Report",
+                                                    title: "Tech Month Campaign Ad Report",
                                                     image: "/proof/ecommerce-15x-roas.png",
-                                                    metric: "13.82x ROAS | $4,300 Revenue",
-                                                    details: "Targeted console drop segment: 80 orders on $311 ad spend."
+                                                    metric: "13.8x ROAS | $4,300 Revenue",
+                                                    details: "Tech Month campaign segment: 80 orders across various tech items on $311 ad spend."
                                                 })}
-                                                className="text-primary hover:underline"
+                                                className="text-primary hover:text-black transition-colors min-h-[36px] flex items-center"
                                             >
-                                                View Console Drop report →
+                                                View Tech Month report →
                                             </button>
                                             <button
                                                 onClick={() => setActiveProofModal({
-                                                    title: "Targeted Retargeting Ad Report",
+                                                    title: "PS5 Sales Campaign Ad Report",
                                                     image: "/proof/ps5-xbox-results.png",
-                                                    metric: "6.80x ROAS | $3,493 Revenue",
-                                                    details: "Retargeting segment: 58 orders on $513.73 ad spend."
+                                                    metric: "6.8x ROAS | $3,493 Revenue",
+                                                    details: "PS5 sales campaign segment: 58 orders on $513.73 ad spend."
                                                 })}
-                                                className="text-primary hover:underline"
+                                                className="text-primary hover:text-black transition-colors min-h-[36px] flex items-center"
                                             >
-                                                View Retargeting report →
+                                                View PS5 report →
                                             </button>
                                         </div>
                                     </div>
