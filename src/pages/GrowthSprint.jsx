@@ -790,7 +790,7 @@ export default function GrowthSprint() {
                             </div>
                         </div>
 
-                        {/* CARD 3: TOSSE 2024 */}
+                        {/* CARD 3: TOSSE */}
                         <div className="bg-white border border-gray-200 p-5 sm:p-8 flex flex-col justify-between">
                             <div>
                                 <div className="flex flex-col gap-1.5 mb-6">
@@ -798,7 +798,7 @@ export default function GrowthSprint() {
                                         EDUCATION EXHIBITION
                                     </span>
                                     <h3 className="text-2xl font-black uppercase text-black tracking-tight mt-1">
-                                        TOSSE 2024
+                                        TOSSE
                                     </h3>
                                     <div className="flex items-center gap-2">
                                         <span className="text-xs font-bold text-gray-500 uppercase">
@@ -838,7 +838,7 @@ export default function GrowthSprint() {
                             <div className="pt-4 border-t border-gray-200">
                                 <button
                                     onClick={() => setActiveProofModal({
-                                        title: "TOSSE 2024 Backend Form Registrations Report",
+                                        title: "TOSSE Backend Form Registrations Report",
                                         image: "/proof/tosse-backend-registrations.png",
                                         metric: "1,497 Total Registrations",
                                         details: "Official backend report: 126 Exhibitor registration form entries + 1,371 Visitor registration form entries = 1,497 Total registrations."
