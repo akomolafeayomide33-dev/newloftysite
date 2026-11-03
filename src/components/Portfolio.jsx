@@ -5,15 +5,6 @@ import { Link } from 'react-router-dom';
 
 const projects = [
     {
-        title: "Craftsquarre",
-        slug: "craftsquarre",
-        category: "Marketplace / Ecommerce",
-        image: "/craftsquarre/craftsquarre-desktop-hero-full.png",
-        metric: "100+ Merchants • 150+ Buyers",
-        description: "Helping creativity get discovered by building the brand, marketing system, and growth foundation behind a marketplace for Nigerian creators.",
-        highlight: true
-    },
-    {
         title: "Pakam",
         slug: "pakam",
         category: "Circular Economy Technology",
