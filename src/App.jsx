@@ -9,7 +9,6 @@ import BlogPost from './pages/BlogPost';
 import ServiceDetail from './pages/ServiceDetail';
 import CaseStudyDetail from './pages/CaseStudyDetail';
 import PakamCaseStudy from './pages/PakamCaseStudy';
-import CraftsquarreCaseStudy from './pages/CraftsquarreCaseStudy';
 import MenoHavenCaseStudy from './pages/MenoHavenCaseStudy';
 import Legal from './pages/Legal';
 import Fellowship from './pages/Fellowship';
@@ -61,7 +60,6 @@ function App() {
             <Route path="blog/:slug" element={<BlogPost />} />
             <Route path="services/:slug" element={<ServiceDetail />} />
             <Route path="work/pakam" element={<PakamCaseStudy />} />
-            <Route path="work/craftsquarre" element={<CraftsquarreCaseStudy />} />
             <Route path="work/meno-haven" element={<MenoHavenCaseStudy />} />
             <Route path="work/:slug" element={<CaseStudyDetail />} />
             <Route path="fellowship" element={<Fellowship />} />
