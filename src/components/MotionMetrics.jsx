@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Recycle, Heart, Briefcase, ShoppingBag, BookOpen } from 'lucide-react';
+import { Users, Recycle, Heart, Globe, TrendingUp, BookOpen } from 'lucide-react';
 
 const metrics = [
     {
@@ -11,23 +11,23 @@ const metrics = [
         description: "Platform user growth achieved through strategic customer acquisition and education campaigns."
     },
     {
-        icon: <Briefcase size={36} />,
-        value: "100+",
-        label: "Craftsquarre merchants",
-        client: "Craftsquarre",
-        description: "Creator and merchant onboarding for the marketplace platform."
+        icon: <Globe size={36} />,
+        value: "1M+",
+        label: "People reached",
+        client: "Pakam",
+        description: "Organic and paid campaign reach across digital education and acquisition initiatives."
     },
     {
-        icon: <ShoppingBag size={36} />,
-        value: "150+",
-        label: "Craftsquarre buyers",
-        client: "Craftsquarre",
-        description: "Early buyer acquisition and market validation for creator products."
+        icon: <TrendingUp size={36} />,
+        value: "250,000+ KG",
+        label: "Waste recovered",
+        client: "Pakam",
+        description: "Environmental impact and recycling recovery supported during the engagement."
     },
     {
         icon: <Recycle size={36} />,
         value: "2 TONS",
-        label: "Waste recovered",
+        label: "Challenge recovery",
         client: "Pakam Challenge",
         description: "Recyclable waste collected through Pakam's Recycle Together Challenge."
     },
